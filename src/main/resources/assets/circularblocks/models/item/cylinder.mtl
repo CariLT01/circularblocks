@@ -1,2 +1,4 @@
-newmtl cylinder_material
-map_Kd minecraft:block/iron_block
+newmtl cylinder_sides
+map_Kd minecraft:block/quartz_pillar
+newmtl cylinder_caps
+map_Kd minecraft:block/quartz_pillar_top

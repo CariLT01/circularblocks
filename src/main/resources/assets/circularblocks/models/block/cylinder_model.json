@@ -1,18 +1,16 @@
 {
   "parent": "forge:item/default",
   "loader": "forge:composite",
+  "ambientocclusion": false,
   "children": {
     "part1": {
       "loader": "forge:obj",
       "model": "circularblocks:models/item/cylinder.obj",
-      "emissive_ambient": false,
-      "textures": {
-        "#cylinder_material": "minecraft:block/iron_block"
-      }
+      "emissive_ambient": true
     }
   },
   "textures": {
-    "particle": "minecraft:block/iron_block"
+    "particle": "minecraft:block/quartz_block_side"
   },
   "render_type": "cutout_mipped"
 }

@@ -10,6 +10,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,7 +47,10 @@ public class CircularBlocks
 
 
     public static final RegistryObject<Block> CYLINDER_BLOCK = BLOCKS.register(
-            "cylinder", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(5.0f).noOcclusion()));
+            "cylinder", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.QUARTZ)
+                    .strength(5.0f)
+                    .noOcclusion()));
 
     public static final RegistryObject<Item> CYLINDER_ITEM = ITEMS.register("cylinder",
             () -> new BlockItem(CYLINDER_BLOCK.get(), new Item.Properties()));
