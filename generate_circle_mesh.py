@@ -1,10 +1,20 @@
 import math
 
-def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repeat=1.0, wrap_uv=False, size=(1.0, 1.0, 1.0)):
+def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repeat=1.0, wrap_uv=False, size=(1.0, 1.0, 1.0), centered=False):
     sx, sy, sz = size
+
+    # Calculate offsets based on the centered toggle
+    # If centered is True, we move the midpoint of the mesh to (0.5, 0.5, 0.5)
+    if centered:
+        offset_x = 0.5 - (sx / 2.0)
+        offset_y = 0.5 - (sy / 2.0)
+        offset_z = 0.5 - (sz / 2.0)
+    else:
+        offset_x = offset_y = offset_z = 0.0
+
     vertices = []
     uvs = []
-    normals = []  # Added normals list
+    normals = []
     side_faces = []
     cap_faces = []
 
@@ -22,17 +32,16 @@ def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repea
         for y_val in (0.0, 1.0):
             for i in range(sides + 1):
                 angle = 2 * math.pi * i / sides
-                vx = (0.5 + 0.5 * math.cos(angle)) * sx
-                vz = (0.5 + 0.5 * math.sin(angle)) * sz
-                vertices.append((vx, y_val * sy, vz))
+                vx = (0.5 + 0.5 * math.cos(angle)) * sx + offset_x
+                vy = (y_val * sy) + offset_y
+                vz = (0.5 + 0.5 * math.sin(angle)) * sz + offset_z
+                vertices.append((vx, vy, vz))
                 uvs.append(((angle / (2 * math.pi)) * side_uv_repeat, y_val))
-                # Normal points outward from center (0.5, 0.5)
                 normals.append((math.cos(angle), 0.0, math.sin(angle)))
-                
+
         for i in range(sides):
             bl, br = i + 1, i + 2
             tl, tr = bl + (sides + 1), br + (sides + 1)
-            # Added //norm_idx to the face format
             side_faces.append(f"f {bl}/{bl}/{bl} {tl}/{tl}/{tl} {tr}/{tr}/{tr}")
             side_faces.append(f"f {bl}/{bl}/{bl} {tr}/{tr}/{tr} {br}/{br}/{br}")
     else:
@@ -43,14 +52,14 @@ def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repea
             for k in range(segs + 1):
                 global_i = sum(segments_per_tile[:t]) + k
                 angle = 2 * math.pi * global_i / sides
-                vx = (0.5 + 0.5 * math.cos(angle)) * sx
-                vz = (0.5 + 0.5 * math.sin(angle)) * sz
+                vx = (0.5 + 0.5 * math.cos(angle)) * sx + offset_x
+                vz = (0.5 + 0.5 * math.sin(angle)) * sz + offset_z
                 u_raw = (angle / (2 * math.pi)) * side_uv_repeat
                 u = 1.0 if k == segs else (u_raw - math.floor(u_raw))
                 nx, nz = math.cos(angle), math.sin(angle)
 
-                vertices.append((vx, 0.0, vz)); uvs.append((u, 0.0)); normals.append((nx, 0.0, nz))
-                vertices.append((vx, sy, vz)); uvs.append((u, 1.0)); normals.append((nx, 0.0, nz))
+                vertices.append((vx, 0.0 + offset_y, vz)); uvs.append((u, 0.0)); normals.append((nx, 0.0, nz))
+                vertices.append((vx, sy + offset_y, vz)); uvs.append((u, 1.0)); normals.append((nx, 0.0, nz))
 
             tile_first = len(vertices) - 2 * (segs + 1) + 1
             for k in range(segs):
@@ -60,35 +69,35 @@ def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repea
                 side_faces.append(f"f {b0}/{b0}/{b0} {t1}/{t1}/{t1} {b1}/{b1}/{b1}")
 
     # --- CAPS ---
-    # Bottom cap (Normal is -Y)
+    # Bottom cap
     center_idx = len(vertices) + 1
-    vertices.append((0.5 * sx, 0.0, 0.5 * sz)); uvs.append((0.5, 0.5)); normals.append((0, -1, 0))
+    vertices.append((0.5 * sx + offset_x, 0.0 + offset_y, 0.5 * sz + offset_z))
+    uvs.append((0.5, 0.5)); normals.append((0, -1, 0))
     ring_start = len(vertices) + 1
     for i in range(sides):
         angle = 2 * math.pi * i / sides
-        vertices.append(((0.5 + 0.5 * math.cos(angle)) * sx, 0.0, (0.5 + 0.5 * math.sin(angle)) * sz))
-        uvs.append(disk_to_square_uv(math.cos(angle), math.sin(angle)))
-        normals.append((0, -1, 0))
+        vertices.append(((0.5 + 0.5 * math.cos(angle)) * sx + offset_x, 0.0 + offset_y, (0.5 + 0.5 * math.sin(angle)) * sz + offset_z))
+        uvs.append(disk_to_square_uv(math.cos(angle), math.sin(angle))); normals.append((0, -1, 0))
     for i in range(sides):
         v1, v2, v3 = center_idx, ring_start + i, ring_start + ((i + 1) % sides)
         cap_faces.append(f"f {v1}/{v1}/{v1} {v2}/{v2}/{v2} {v3}/{v3}/{v3}")
 
-    # Top cap (Normal is +Y)
+    # Top cap
     center_idx_top = len(vertices) + 1
-    vertices.append((0.5 * sx, sy, 0.5 * sz)); uvs.append((0.5, 0.5)); normals.append((0, 1, 0))
+    vertices.append((0.5 * sx + offset_x, sy + offset_y, 0.5 * sz + offset_z))
+    uvs.append((0.5, 0.5)); normals.append((0, 1, 0))
     ring_start_top = len(vertices) + 1
     for i in range(sides):
         angle = 2 * math.pi * i / sides
-        vertices.append(((0.5 + 0.5 * math.cos(angle)) * sx, sy, (0.5 + 0.5 * math.sin(angle)) * sz))
-        uvs.append(disk_to_square_uv(math.cos(angle), math.sin(angle)))
-        normals.append((0, 1, 0))
+        vertices.append(((0.5 + 0.5 * math.cos(angle)) * sx + offset_x, sy + offset_y, (0.5 + 0.5 * math.sin(angle)) * sz + offset_z))
+        uvs.append(disk_to_square_uv(math.cos(angle), math.sin(angle))); normals.append((0, 1, 0))
     for i in range(sides):
         v1, v2, v3 = center_idx_top, ring_start_top + ((i + 1) % sides), ring_start_top + i
         cap_faces.append(f"f {v1}/{v1}/{v1} {v2}/{v2}/{v2} {v3}/{v3}/{v3}")
 
     # --- WRITE OBJ ---
     with open(filename, "w") as f:
-        f.write(f"# Cylinder - Size: {size}\n")
+        f.write(f"# Cylinder - Size: {size}, Centered: {centered}\n")
         f.write("o cylinder\nmtllib cylinder.mtl\n")
         for v in vertices: f.write(f"v {v[0]:.6f} {v[1]:.6f} {v[2]:.6f}\n")
         for vt in uvs: f.write(f"vt {vt[0]:.6f} {vt[1]:.6f}\n")
@@ -98,4 +107,5 @@ def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repea
         f.write("usemtl cylinder_caps\n")
         for face in cap_faces: f.write(face + "\n")
 
-generate_minecraft_cylinder(32, filename="cylinder.obj", side_uv_repeat=8.0, wrap_uv=True, size=(2.0, 1.0, 2.0))
+# Call with centered=True to align to 0.5, 0.5, 0.5
+generate_minecraft_cylinder(32, filename="cylinder.obj", side_uv_repeat=8.0, wrap_uv=True, size=(2.0, 1.0, 2.0), centered=False)
