@@ -108,4 +108,4 @@ def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repea
         for face in cap_faces: f.write(face + "\n")
 
 # Call with centered=True to align to 0.5, 0.5, 0.5
-generate_minecraft_cylinder(32, filename="cylinder.obj", side_uv_repeat=8.0, wrap_uv=True, size=(3.0, 1.0, 3.0), centered=True, mtl="ironcylinder")
+generate_minecraft_cylinder(32, filename="cylinder.obj", side_uv_repeat=1, wrap_uv=True, size=(3.0, 1.0, 3.0), centered=True, mtl="ironcylinder")
