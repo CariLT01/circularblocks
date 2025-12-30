@@ -67,9 +67,36 @@ public class CylinderBlockStateProvider extends BlockStateProvider {
                     JsonArray scale = new JsonArray();
                     scale.add(0.31);
                     scale.add(0.31);
-                    scale.add(0.80);
+                    scale.add(0.31);
                     gui.add("scale", scale);
                     display.add("gui", gui);
+
+                    JsonObject thirdperson_righthand = new JsonObject();
+                    JsonArray rotation2 = new JsonArray();
+                    rotation2.add(-42);
+                    rotation2.add(-50);
+                    rotation2.add(-47);
+                    thirdperson_righthand.add("rotation", rotation2);
+                    JsonArray scale2 = new JsonArray();
+                    scale2.add(0.25);
+                    scale2.add(0.25);
+                    scale2.add(0.25);
+                    thirdperson_righthand.add("scale", scale2);
+                    display.add("thirdperson_righthand", thirdperson_righthand);
+
+                    JsonObject thirdperson_lefthand = new JsonObject();
+                    thirdperson_lefthand.add("scale", scale2);
+                    display.add("thirdperson_lefthand", thirdperson_lefthand);
+
+                    JsonObject firstperson_righthand = new JsonObject();
+                    firstperson_righthand.add("scale", scale2);
+                    display.add("firstperson_righthand", firstperson_righthand);
+
+                    JsonObject ground = new JsonObject();
+                    ground.add("scale", scale2);
+                    display.add("ground", ground);
+
+
                     return display;
                 }
             }.child("part1", getSmoothMeshPart(name)));
