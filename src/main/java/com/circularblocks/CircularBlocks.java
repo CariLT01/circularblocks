@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -52,8 +54,17 @@ public class CircularBlocks
                     .strength(5.0f)
                     .noOcclusion()));
 
+    public static final RegistryObject<Block> CYLINDER_BLOCK_2X2 = BLOCKS.register(
+            "cylinder_2x2", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.QUARTZ)
+                    .strength(5.0f)
+                    .noOcclusion()));
+
     public static final RegistryObject<Item> CYLINDER_ITEM = ITEMS.register("cylinder",
             () -> new BlockItem(CYLINDER_BLOCK.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> CYLINDER_ITEM_2X2 = ITEMS.register("cylinder_2x2",
+            () -> new BlockItem(CYLINDER_BLOCK_2X2.get(), new Item.Properties()));
 
 
     public CircularBlocks(FMLJavaModLoadingContext context)
@@ -114,6 +125,12 @@ public class CircularBlocks
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        }
+
+        @SubscribeEvent
+        public static void registerGeometryLoaders(ModelEvent.RegisterGeometryLoaders event) {
+            // This ID "smooth_cylinder" is what you use in your JSON
+            event.register("smooth_mesh_loader", MeshLoader.INSTANCE);
         }
 
     }

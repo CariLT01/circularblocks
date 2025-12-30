@@ -4,7 +4,7 @@
   "children": {
     "part1": {
       "loader": "circularblocks:smooth_mesh_loader",
-      "model": "circularblocks:models/item/cylinder.obj",
+      "model": "circularblocks:models/item/cylinder_2x2.obj",
       "emissive_ambient": true
     }
   },
