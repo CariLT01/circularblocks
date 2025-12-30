@@ -1,6 +1,6 @@
 import math
 
-def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repeat=1.0, wrap_uv=False, size=(1.0, 1.0, 1.0), centered=False):
+def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repeat=1.0, wrap_uv=False, size=(1.0, 1.0, 1.0), centered=False, mtl="cylinder"):
     sx, sy, sz = size
 
     # Calculate offsets based on the centered toggle
@@ -98,14 +98,14 @@ def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repea
     # --- WRITE OBJ ---
     with open(filename, "w") as f:
         f.write(f"# Cylinder - Size: {size}, Centered: {centered}\n")
-        f.write("o cylinder\nmtllib cylinder.mtl\n")
+        f.write(f"o cylinder\nmtllib {mtl}.mtl\n")
         for v in vertices: f.write(f"v {v[0]:.6f} {v[1]:.6f} {v[2]:.6f}\n")
         for vt in uvs: f.write(f"vt {vt[0]:.6f} {vt[1]:.6f}\n")
         for vn in normals: f.write(f"vn {vn[0]:.4f} {vn[1]:.4f} {vn[2]:.4f}\n")
-        f.write("usemtl cylinder_sides\n")
+        f.write(f"usemtl {mtl}_sides\n")
         for face in side_faces: f.write(face + "\n")
-        f.write("usemtl cylinder_caps\n")
+        f.write(f"usemtl {mtl}_caps\n")
         for face in cap_faces: f.write(face + "\n")
 
 # Call with centered=True to align to 0.5, 0.5, 0.5
-generate_minecraft_cylinder(32, filename="cylinder.obj", side_uv_repeat=8.0, wrap_uv=True, size=(2.0, 1.0, 2.0), centered=False)
+generate_minecraft_cylinder(32, filename="cylinder.obj", side_uv_repeat=8.0, wrap_uv=True, size=(3.0, 1.0, 3.0), centered=True, mtl="ironcylinder")
