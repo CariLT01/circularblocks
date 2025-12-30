@@ -1,5 +1,6 @@
 package com.circularblocks;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +12,9 @@ import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
 import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CylinderBlockStateProvider extends BlockStateProvider {
@@ -49,7 +52,52 @@ public class CylinderBlockStateProvider extends BlockStateProvider {
 
                     // This manually adds "shade": false to the root of the loader block
                     json.addProperty("shade", false);
+                    json.add("display", getDisplayJsonObject());
                     return json;
+                }
+
+                private static @NotNull JsonObject getDisplayJsonObject() {
+                    JsonObject display = new JsonObject();
+                    JsonObject gui = new JsonObject();
+                    JsonArray rotation = new JsonArray();
+                    rotation.add(-48);
+                    rotation.add(-86);
+                    rotation.add(0);
+                    gui.add("rotation", rotation);
+                    JsonArray scale = new JsonArray();
+                    scale.add(0.31);
+                    scale.add(0.31);
+                    scale.add(0.31);
+                    gui.add("scale", scale);
+                    display.add("gui", gui);
+
+                    JsonObject thirdperson_righthand = new JsonObject();
+                    JsonArray rotation2 = new JsonArray();
+                    rotation2.add(-42);
+                    rotation2.add(-50);
+                    rotation2.add(-47);
+                    thirdperson_righthand.add("rotation", rotation2);
+                    JsonArray scale2 = new JsonArray();
+                    scale2.add(0.25);
+                    scale2.add(0.25);
+                    scale2.add(0.25);
+                    thirdperson_righthand.add("scale", scale2);
+                    display.add("thirdperson_righthand", thirdperson_righthand);
+
+                    JsonObject thirdperson_lefthand = new JsonObject();
+                    thirdperson_lefthand.add("scale", scale2);
+                    display.add("thirdperson_lefthand", thirdperson_lefthand);
+
+                    JsonObject firstperson_righthand = new JsonObject();
+                    firstperson_righthand.add("scale", scale2);
+                    display.add("firstperson_righthand", firstperson_righthand);
+
+                    JsonObject ground = new JsonObject();
+                    ground.add("scale", scale2);
+                    display.add("ground", ground);
+
+
+                    return display;
                 }
             }.child("part1", getSmoothMeshPart(name)));
 

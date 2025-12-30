@@ -109,6 +109,16 @@ public class CircularBlocks
                 )
         );
 
+        cylindersRegistries.createCylinderType(
+                new CylinderType("stone_cylinder", "minecraft:block/stone", "minecraft:block/stone",
+                        1.0f, 1.0f, 1.0f, 1.0f, false, 32)
+        );
+
+        cylindersRegistries.createCylinderType(
+                new CylinderType("oak_log_cylinder", "minecraft:block/oak_log", "minecraft:block/oak_log_top",
+                        4.0f, 1.0f, 1.0f, 1.0f, false, 32)
+        );
+
         cylindersRegistries.registerBlocksAndItems();
 
 
