@@ -92,13 +92,13 @@ public class CircularBlocks
                     .noOcclusion()));
 
     public static final RegistryObject<Item> IRON_CYLINDER_ITEM = ITEMS.register("ironcylinder",
-            () -> new BlockItem(CYLINDER_BLOCK.get(), new Item.Properties()));
+            () -> new BlockItem(IRON_CYLINDER_BLOCK.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> IRON_CYLINDER_ITEM_2X2 = ITEMS.register("ironcylinder_2x2",
-            () -> new BlockItem(CYLINDER_BLOCK_2X2.get(), new Item.Properties()));
+            () -> new BlockItem(IRON_CYLINDER_BLOCK_2X2.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> IRON_CYLINDER_ITEM_3X3 = ITEMS.register("ironcylinder_3x3",
-            () -> new BlockItem(CYLINDER_BLOCK_3X3.get(), new Item.Properties()));
+            () -> new BlockItem(IRON_CYLINDER_BLOCK_3X3.get(), new Item.Properties()));
 
 
     public CircularBlocks(FMLJavaModLoadingContext context)
