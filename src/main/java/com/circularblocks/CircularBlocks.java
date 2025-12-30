@@ -59,12 +59,46 @@ public class CircularBlocks
                     .mapColor(MapColor.QUARTZ)
                     .strength(5.0f)
                     .noOcclusion()));
+    public static final RegistryObject<Block> CYLINDER_BLOCK_3X3 = BLOCKS.register(
+            "cylinder_3x3", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.QUARTZ)
+                    .strength(5.0f)
+                    .noOcclusion()));
 
     public static final RegistryObject<Item> CYLINDER_ITEM = ITEMS.register("cylinder",
             () -> new BlockItem(CYLINDER_BLOCK.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> CYLINDER_ITEM_2X2 = ITEMS.register("cylinder_2x2",
             () -> new BlockItem(CYLINDER_BLOCK_2X2.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> CYLINDER_ITEM_3X3 = ITEMS.register("cylinder_3x3",
+            () -> new BlockItem(CYLINDER_BLOCK_3X3.get(), new Item.Properties()));
+
+    public static final RegistryObject<Block> IRON_CYLINDER_BLOCK = BLOCKS.register(
+            "ironcylinder", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.RAW_IRON)
+                    .strength(5.0f)
+                    .noOcclusion()));
+
+    public static final RegistryObject<Block> IRON_CYLINDER_BLOCK_2X2 = BLOCKS.register(
+            "ironcylinder_2x2", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.RAW_IRON)
+                    .strength(5.0f)
+                    .noOcclusion()));
+    public static final RegistryObject<Block> IRON_CYLINDER_BLOCK_3X3 = BLOCKS.register(
+            "ironcylinder_3x3", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.RAW_IRON)
+                    .strength(5.0f)
+                    .noOcclusion()));
+
+    public static final RegistryObject<Item> IRON_CYLINDER_ITEM = ITEMS.register("ironcylinder",
+            () -> new BlockItem(CYLINDER_BLOCK.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> IRON_CYLINDER_ITEM_2X2 = ITEMS.register("ironcylinder_2x2",
+            () -> new BlockItem(CYLINDER_BLOCK_2X2.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> IRON_CYLINDER_ITEM_3X3 = ITEMS.register("ironcylinder_3x3",
+            () -> new BlockItem(CYLINDER_BLOCK_3X3.get(), new Item.Properties()));
 
 
     public CircularBlocks(FMLJavaModLoadingContext context)

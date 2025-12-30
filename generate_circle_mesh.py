@@ -98,4 +98,4 @@ def generate_minecraft_cylinder(sides=32, filename="cylinder.obj", side_uv_repea
         f.write("usemtl cylinder_caps\n")
         for face in cap_faces: f.write(face + "\n")
 
-generate_minecraft_cylinder(32, filename="cylinder.obj", side_uv_repeat=8.0, wrap_uv=True, size=(2.0, 1.0, 2.0))
+generate_minecraft_cylinder(32, filename="src/main/resources/assets/circularblocks/models/item/cylinder_3x3.obj", side_uv_repeat=8.0, wrap_uv=True, size=(3.0, 1.0, 3.0))

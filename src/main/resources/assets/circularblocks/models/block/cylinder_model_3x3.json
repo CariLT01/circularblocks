@@ -1,0 +1,17 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "children": {
+    "part1": {
+      "loader": "circularblocks:smooth_mesh_loader",
+      "model": "circularblocks:models/item/cylinder_3x3.obj",
+      "emissive_ambient": true
+    }
+  },
+  "textures": {
+    "particle": "minecraft:block/quartz_block_side"
+  },
+  "render_type": "cutout_mipped",
+  "shade": false,
+  "ambient_occlusion": false
+}
