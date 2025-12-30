@@ -46,59 +46,8 @@ public class CircularBlocks
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
 
+    public static final CylindersRegistries cylindersRegistries = new CylindersRegistries(BLOCKS, ITEMS);
 
-
-    public static final RegistryObject<Block> CYLINDER_BLOCK = BLOCKS.register(
-            "cylinder", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.QUARTZ)
-                    .strength(5.0f)
-                    .noOcclusion()));
-
-    public static final RegistryObject<Block> CYLINDER_BLOCK_2X2 = BLOCKS.register(
-            "cylinder_2x2", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.QUARTZ)
-                    .strength(5.0f)
-                    .noOcclusion()));
-    public static final RegistryObject<Block> CYLINDER_BLOCK_3X3 = BLOCKS.register(
-            "cylinder_3x3", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.QUARTZ)
-                    .strength(5.0f)
-                    .noOcclusion()));
-
-    public static final RegistryObject<Item> CYLINDER_ITEM = ITEMS.register("cylinder",
-            () -> new BlockItem(CYLINDER_BLOCK.get(), new Item.Properties()));
-
-    public static final RegistryObject<Item> CYLINDER_ITEM_2X2 = ITEMS.register("cylinder_2x2",
-            () -> new BlockItem(CYLINDER_BLOCK_2X2.get(), new Item.Properties()));
-
-    public static final RegistryObject<Item> CYLINDER_ITEM_3X3 = ITEMS.register("cylinder_3x3",
-            () -> new BlockItem(CYLINDER_BLOCK_3X3.get(), new Item.Properties()));
-
-    public static final RegistryObject<Block> IRON_CYLINDER_BLOCK = BLOCKS.register(
-            "ironcylinder", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.RAW_IRON)
-                    .strength(5.0f)
-                    .noOcclusion()));
-
-    public static final RegistryObject<Block> IRON_CYLINDER_BLOCK_2X2 = BLOCKS.register(
-            "ironcylinder_2x2", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.RAW_IRON)
-                    .strength(5.0f)
-                    .noOcclusion()));
-    public static final RegistryObject<Block> IRON_CYLINDER_BLOCK_3X3 = BLOCKS.register(
-            "ironcylinder_3x3", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.RAW_IRON)
-                    .strength(5.0f)
-                    .noOcclusion()));
-
-    public static final RegistryObject<Item> IRON_CYLINDER_ITEM = ITEMS.register("ironcylinder",
-            () -> new BlockItem(IRON_CYLINDER_BLOCK.get(), new Item.Properties()));
-
-    public static final RegistryObject<Item> IRON_CYLINDER_ITEM_2X2 = ITEMS.register("ironcylinder_2x2",
-            () -> new BlockItem(IRON_CYLINDER_BLOCK_2X2.get(), new Item.Properties()));
-
-    public static final RegistryObject<Item> IRON_CYLINDER_ITEM_3X3 = ITEMS.register("ironcylinder_3x3",
-            () -> new BlockItem(IRON_CYLINDER_BLOCK_3X3.get(), new Item.Properties()));
 
 
     public CircularBlocks(FMLJavaModLoadingContext context)
@@ -117,6 +66,51 @@ public class CircularBlocks
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        cylindersRegistries.createCylinderType(
+                new CylinderType(
+                        "cylinder", "minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top",
+                        4.0f, 1.0f, 1.0f, 1.0f, false, 32
+                )
+        );
+
+        cylindersRegistries.createCylinderType(
+                new CylinderType(
+                        "cylinder_2x2", "minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top",
+                        8.0f, 2.0f, 1.0f, 2.0f, false, 32
+                )
+        );
+
+        cylindersRegistries.createCylinderType(
+                new CylinderType(
+                        "cylinder_3x3", "minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top",
+                        8.0f, 3.0f, 1.0f, 3.0f, true, 32
+                )
+        );
+
+        cylindersRegistries.createCylinderType(
+                new CylinderType(
+                        "iron_cylinder", "minecraft:block/iron_block", "minecraft:block/iron_block",
+                        1.0f, 1.0f, 1.0f, 1.0f, false, 32
+                )
+        );
+
+        cylindersRegistries.createCylinderType(
+                new CylinderType(
+                        "iron_cylinder_2x2", "minecraft:block/iron_block", "minecraft:block/iron_block",
+                        1.0f, 2.0f, 1.0f, 2.0f, false, 32
+                )
+        );
+
+        cylindersRegistries.createCylinderType(
+                new CylinderType(
+                        "iron_cylinder_3x3", "minecraft:block/iron_block", "minecraft_block/iron_block",
+                        1.0f, 3.0f, 1.0f, 3.0f, true, 32
+                )
+        );
+
+        cylindersRegistries.registerBlocksAndItems();
+
 
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
