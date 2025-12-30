@@ -259,6 +259,7 @@ public class CylinderMeshProvider implements DataProvider {
         for (String face : sideFaces) {
             builder.append(face).append("\n");
         }
+        builder.append("usemtl cylinder_caps\n");
         for (String face : capFaces) {
             builder.append(face).append("\n");
         }

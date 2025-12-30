@@ -104,7 +104,7 @@ public class CircularBlocks
 
         cylindersRegistries.createCylinderType(
                 new CylinderType(
-                        "iron_cylinder_3x3", "minecraft:block/iron_block", "minecraft_block/iron_block",
+                        "iron_cylinder_3x3", "minecraft:block/iron_block", "minecraft:block/iron_block",
                         1.0f, 3.0f, 1.0f, 3.0f, true, 32
                 )
         );
