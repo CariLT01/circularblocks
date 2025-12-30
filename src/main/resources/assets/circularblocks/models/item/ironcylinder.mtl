@@ -1,0 +1,4 @@
+newmtl ironcylinder_sides
+map_Kd minecraft:block/iron_block
+newmtl ironcylinder_caps
+map_Kd minecraft:block/iron_block
