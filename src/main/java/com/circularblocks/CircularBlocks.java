@@ -48,8 +48,9 @@ public class CircularBlocks
 
 
 
-    public CircularBlocks(FMLJavaModLoadingContext context)
+    public CircularBlocks()
     {
+        final FMLJavaModLoadingContext context = FMLJavaModLoadingContext.get();
         IEventBus modEventBus = context.getModEventBus();
 
         // Register the commonSetup method for modloading
