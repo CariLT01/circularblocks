@@ -27,7 +27,7 @@ public class ShapeMeshProvider implements DataProvider {
     public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cache) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         Path folderPath = output.getOutputFolder().resolve("assets/" + modId + "/models/item");
-        Path recipePath = output.getOutputFolder().resolve("data/" + modId + "recipes");
+        Path recipePath = output.getOutputFolder().resolve("data/" + modId + "/recipes");
 
         for (Shape shape : registries.getShapes()) {
             // Handle OBJ

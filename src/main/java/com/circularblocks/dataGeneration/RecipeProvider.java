@@ -12,9 +12,9 @@ public class RecipeProvider {
         if (shape instanceof CylinderShape) {
             JsonObject json = new JsonObject();
             json.addProperty("type", "minecraft:crafting_shapeless");
-            JsonArray ingredients = new JsonArray(2);
+            JsonArray ingredients = new JsonArray();
             if(shape.name.contains("2x2")){
-                String blockname = shape.name.replace("_2x2", "");
+                String blockname = "circularblocks:" + shape.name.replace("_2x2", "");
                 JsonObject block1 = new JsonObject();
                 block1.addProperty("item", blockname);
                 JsonObject block2 = new JsonObject();
@@ -23,7 +23,7 @@ public class RecipeProvider {
                 ingredients.add(block2);
 
             } else if(shape.name.contains("3x3")){
-                String blockname = shape.name.replace("_3x3", "");
+                String blockname = "circularblocks:" + shape.name.replace("_3x3", "");
                 JsonObject block1 = new JsonObject();
                 block1.addProperty("item", blockname);
                 JsonObject block2 = new JsonObject();
@@ -48,7 +48,7 @@ public class RecipeProvider {
             result.addProperty("item", shape.name);
             result.addProperty("count", 1);
             json.add("result", result);
-            return json.getAsString();
+            return json.toString();
 
         }
         return "";
