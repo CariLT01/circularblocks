@@ -1,6 +1,7 @@
 package com.circularblocks.dataGeneration;
 
 import com.circularblocks.shapes.CylinderShape;
+import com.circularblocks.shapes.QuarterCylinderShape;
 import com.circularblocks.shapes.Shape;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -9,7 +10,8 @@ public class RecipeProvider {
 
     public static String buildRecipe(Shape shape)
     {
-        if (shape instanceof CylinderShape) {
+        System.out.println(shape.name);
+        if (shape instanceof CylinderShape || shape instanceof QuarterCylinderShape) {
             JsonObject json = new JsonObject();
             json.addProperty("type", "minecraft:crafting_shapeless");
             JsonArray ingredients = new JsonArray();
@@ -34,7 +36,17 @@ public class RecipeProvider {
                 ingredients.add(block2);
                 ingredients.add(block3);
 
-            }else{
+            }else if(shape.name.contains("quarter")){
+                System.out.println("KKKK"+shape.name);
+                String blockname = "circularblocks:" + shape.name.replace("_quarter", "");
+                JsonObject block1 = new JsonObject();
+                block1.addProperty("item", blockname);
+                JsonObject block2 = new JsonObject();
+                block2.addProperty("item", "minecraft:stick");
+                ingredients.add(block1);
+                ingredients.add(block2);
+            }
+            else{
                 String blockname = shape.sideTextureName.replace("minecraft:block/", "minecraft:");
                 JsonObject block1 = new JsonObject();
                 block1.addProperty("item", "circularblocks:cobblestone_cylinder");
