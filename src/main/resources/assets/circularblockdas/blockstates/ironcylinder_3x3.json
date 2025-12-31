@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "axis=y": { "model": "circularblocks:block/ironcylinder_model_3x3" },
-    "axis=z": { "model": "circularblocks:block/ironcylinder_model_3x3", "x": 90 },
-    "axis=x": { "model": "circularblocks:block/ironcylinder_model_3x3", "x": 90, "y": 90 }
-  }
-}

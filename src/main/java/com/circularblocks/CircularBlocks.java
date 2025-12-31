@@ -73,7 +73,17 @@ public class CircularBlocks
                 List.of("", "_2x2", "_3x3"),
                 List.of(32, 32, 32),
                 List.of(false, false, true),
-                List.of(4.0f, 8.0f, 8.0f)
+                List.of(4.0f, 8.0f, 8.0f),
+                false
+        );
+
+        CylinderGroupConfiguration cylinderGroupConfigurationPlanar = new CylinderGroupConfiguration(
+                List.of(new Vector3(1.0f, 1.0f, 1.0f), new Vector3(2.0f, 1.0f, 2.0f), new Vector3(3.0f, 1.0f, 3.0f)),
+                List.of("", "_2x2", "_3x3"),
+                List.of(32, 32, 32),
+                List.of(false, false, true),
+                List.of(4.0f, 8.0f, 8.0f),
+                true
         );
 
         MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
@@ -90,7 +100,7 @@ public class CircularBlocks
                 new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
                 "oak_log_cylinder");
 
-        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
                 new ShapeAppareance("minecraft:block/cobblestone", "minecraft:block/cobblestone"),
                 "cobblestone_cylinder");
 

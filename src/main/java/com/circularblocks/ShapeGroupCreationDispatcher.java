@@ -39,7 +39,9 @@ public class ShapeGroupCreationDispatcher {
                                         ),
                                         numSides,
                                         centered,
-                                        repeatFreq
+                                        repeatFreq,
+                                        cylinderConfig.usePlanarMapping
+
 
                                 )
                         )
