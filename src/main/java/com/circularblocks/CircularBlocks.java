@@ -100,6 +100,7 @@ public class CircularBlocks
                 new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
                 "oak_log_cylinder");
 
+
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
                 new ShapeAppareance("minecraft:block/cobblestone", "minecraft:block/cobblestone"),
                 "cobblestone_cylinder");
