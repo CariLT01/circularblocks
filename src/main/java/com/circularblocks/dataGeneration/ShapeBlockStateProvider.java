@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
@@ -34,7 +33,7 @@ public class ShapeBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         // Replace this loop with your actual block registry objects or names
 
-        List<Shape> shapes = CircularBlocks.MESH_REGISTRIES.getShapes();
+        List<Shape> shapes = CircularBlocks.SHAPE_REGISTRIES.getShapes();
 
         for (Shape shape : shapes) {
 

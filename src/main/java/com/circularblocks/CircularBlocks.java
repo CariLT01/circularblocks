@@ -5,7 +5,7 @@ import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
 import com.circularblocks.shapes.shapeSettings.QuarterCylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.ShapeSettings;
-import com.circularblocks.types.Vector3;
+import com.circularblocks.types.Vector3f;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
@@ -46,7 +46,7 @@ public class CircularBlocks
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
 
-    public static final ShapeRegistries MESH_REGISTRIES = new ShapeRegistries(BLOCKS, ITEMS, CREATIVE_MODE_TABS);
+    public static final ShapeRegistries SHAPE_REGISTRIES = new ShapeRegistries(BLOCKS, ITEMS, CREATIVE_MODE_TABS);
 
 
 
@@ -69,7 +69,7 @@ public class CircularBlocks
         MinecraftForge.EVENT_BUS.register(this);
 
         CylinderGroupConfiguration cylinderGroupConfiguration = new CylinderGroupConfiguration(
-                List.of(new Vector3(1.0f, 1.0f, 1.0f), new Vector3(2.0f, 1.0f, 2.0f), new Vector3(3.0f, 1.0f, 3.0f)),
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(2.0f, 1.0f, 2.0f), new Vector3f(3.0f, 1.0f, 3.0f)),
                 List.of("", "_2x2", "_3x3"),
                 List.of(32, 32, 32),
                 List.of(false, false, true),
@@ -78,7 +78,7 @@ public class CircularBlocks
         );
 
         CylinderGroupConfiguration cylinderGroupConfigurationPlanar = new CylinderGroupConfiguration(
-                List.of(new Vector3(1.0f, 1.0f, 1.0f), new Vector3(2.0f, 1.0f, 2.0f), new Vector3(3.0f, 1.0f, 3.0f)),
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(2.0f, 1.0f, 2.0f), new Vector3f(3.0f, 1.0f, 3.0f)),
                 List.of("", "_2x2", "_3x3"),
                 List.of(32, 32, 32),
                 List.of(false, false, true),
@@ -86,32 +86,32 @@ public class CircularBlocks
                 true
         );
 
-        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top"),
                 "quartz_pillar_cylinder"
         );
 
-        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/iron_block", "minecraft:block/iron_block"),
                 "iron_block_cylinder"
         );
 
-        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
                 "oak_log_cylinder");
 
-        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
                 new ShapeAppareance("minecraft:block/cobblestone", "minecraft:block/cobblestone"),
                 "cobblestone_cylinder");
 
-        MESH_REGISTRIES.addShape(
+        SHAPE_REGISTRIES.addShape(
                 new QuarterCylinderShape(
                         new QuarterCylinderShapeSettings(
                                 new ShapeSettings(
                                         "iron_block_quarter_cylinder",
                                         "minecraft:block/iron_block",
                                         "minecraft:block/iron_block",
-                                        new Vector3(1.0f, 1.0f, 1.0f),
+                                        new Vector3f(1.0f, 1.0f, 1.0f),
                                         ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL
                                 ),
                                 32,
@@ -121,14 +121,14 @@ public class CircularBlocks
                 )
         );
 
-        MESH_REGISTRIES.addShape(
+        SHAPE_REGISTRIES.addShape(
                 new QuarterCylinderShape(
                         new QuarterCylinderShapeSettings(
                                 new ShapeSettings(
                                         "quartz_block_quarter_cylinder",
                                         "minecraft:block/quartz_block_side",
                                         "minecraft:block/quartz_block_side",
-                                        new Vector3(1.0f, 1.0f, 1.0f),
+                                        new Vector3f(1.0f, 1.0f, 1.0f),
                                         ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL
                                 ),
                                 32,
@@ -138,7 +138,7 @@ public class CircularBlocks
                 )
         );
 
-        MESH_REGISTRIES.registerBlocksAndItems();
+        SHAPE_REGISTRIES.registerBlocksAndItems();
 
 
 

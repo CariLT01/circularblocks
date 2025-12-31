@@ -1,8 +1,8 @@
 package com.circularblocks.meshBuilders;
 
 import com.circularblocks.shapes.CylinderShape;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
+import com.circularblocks.types.Vector2f;
+import com.circularblocks.types.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;

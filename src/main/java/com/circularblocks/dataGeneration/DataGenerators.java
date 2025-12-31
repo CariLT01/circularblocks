@@ -19,7 +19,7 @@ public class DataGenerators {
 
         // This adds the BlockState & Model generator
         generator.addProvider(event.includeClient(),
-                new ShapeMeshProvider(output, CircularBlocks.MODID, CircularBlocks.MESH_REGISTRIES));
+                new ShapeMeshProvider(output, CircularBlocks.MODID, CircularBlocks.SHAPE_REGISTRIES));
         generator.addProvider(event.includeClient(),
                 new ShapeBlockStateProvider(output, CircularBlocks.MODID, existingFileHelper));
     }

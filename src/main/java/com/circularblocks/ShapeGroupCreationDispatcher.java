@@ -5,7 +5,7 @@ import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.ShapeGroupConfiguration;
 import com.circularblocks.shapes.shapeSettings.CylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.ShapeSettings;
-import com.circularblocks.types.Vector3;
+import com.circularblocks.types.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class ShapeGroupCreationDispatcher {
                 CylinderGroupConfiguration cylinderConfig = (CylinderGroupConfiguration) groupType;
 
                 String suffixedName = cylinderConfig.appendedNames.get(i);
-                Vector3 size = cylinderConfig.sizes.get(i);
+                Vector3f size = cylinderConfig.sizes.get(i);
                 int numSides = cylinderConfig.numSides.get(i);
                 boolean centered = cylinderConfig.centered.get(i);
                 float repeatFreq = cylinderConfig.repeatFrequency.get(i);

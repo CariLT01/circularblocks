@@ -1,5 +1,6 @@
 package com.circularblocks.dataGeneration;
 
+import com.circularblocks.types.Vector3f;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
@@ -10,7 +11,6 @@ import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,8 @@ public class BakedMesh extends BakedModelWrapper<BakedModel> {
 
         // The "Sun" direction. 1.0 on Y means light comes from directly above.
         // The slight X and Z offsets create the shading on the sides of the cylinder.
-        Vector3f lightDir = new Vector3f(1.0f, 1.0f, 1.0f);
-        lightDir.normalize();
+        Vector3f lightDir_r = new Vector3f(1.0f, 1.0f, 1.0f);
+        Vector3f lightDir = lightDir_r.normalize();
 
         for (BakedQuad quad : quads) {
             int[] vertexData = quad.getVertices().clone();
