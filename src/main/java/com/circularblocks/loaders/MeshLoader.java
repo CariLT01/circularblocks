@@ -1,5 +1,6 @@
-package com.circularblocks;
+package com.circularblocks.loaders;
 
+import com.circularblocks.dataGeneration.MeshGeometry;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;

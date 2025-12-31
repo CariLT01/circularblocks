@@ -1,5 +1,6 @@
-package com.circularblocks;
+package com.circularblocks.dataGeneration;
 
+import com.circularblocks.CircularBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -18,8 +19,8 @@ public class DataGenerators {
 
         // This adds the BlockState & Model generator
         generator.addProvider(event.includeClient(),
-                new CylinderMeshProvider(output, CircularBlocks.MODID, CircularBlocks.cylindersRegistries));
+                new ShapeMeshProvider(output, CircularBlocks.MODID, CircularBlocks.MESH_REGISTRIES));
         generator.addProvider(event.includeClient(),
-                new CylinderBlockStateProvider(output, CircularBlocks.MODID, existingFileHelper));
+                new ShapeBlockStateProvider(output, CircularBlocks.MODID, existingFileHelper));
     }
 }

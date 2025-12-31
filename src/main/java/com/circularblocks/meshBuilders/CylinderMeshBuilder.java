@@ -1,57 +1,13 @@
-package com.circularblocks;
+package com.circularblocks.meshBuilders;
 
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.PackOutput;
-import org.jetbrains.annotations.NotNull;
+import com.circularblocks.shapes.CylinderShape;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
-public class CylinderMeshProvider implements DataProvider {
-
-    private final PackOutput output;
-    private final CylindersRegistries registries;
-    private final String modId;
-
-    public CylinderMeshProvider(PackOutput output, String modId, CylindersRegistries registries) {
-        this.output = output;
-        this.registries = registries;
-        this.modId = modId;
-    }
-
-    public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cache) {
-        List<CompletableFuture<?>> futures = new ArrayList<>();
-        Path folderPath = output.getOutputFolder().resolve("assets/" + modId + "/models/item");
-
-        for (CylinderType cylinder : registries.getCylinders()) {
-            // Handle OBJ
-            futures.add(CompletableFuture.runAsync(() -> {
-                try {
-                    String objContent = buildCylinderMesh(cylinder);
-                    saveFile(cache, objContent, folderPath.resolve(cylinder.name() + ".obj"));
-
-                    String mtlContent = getMtlFileContents(cylinder);
-                    saveFile(cache, mtlContent, folderPath.resolve(cylinder.name() + ".mtl"));
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to generate mesh for " + cylinder.name(), e);
-                }
-            }));
-        }
-
-        return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
-    }
-
-    private void saveFile(CachedOutput cache, String content, Path path) throws java.io.IOException {
-        byte[] bytes = content.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-        com.google.common.hash.HashCode hash = com.google.common.hash.Hashing.sha1().hashBytes(bytes);
-        cache.writeIfNeeded(path, bytes, hash);
-    }
+public class CylinderMeshBuilder implements  MeshBuilder {
 
     private static Vector2f diskToSquareUV(float dx, float dz) {
         double r = Math.hypot(dx, dz);
@@ -70,20 +26,20 @@ public class CylinderMeshProvider implements DataProvider {
         );
     }
 
-    public static String getMtlFileContents(CylinderType cylinder) {
-        return String.format("newmtl cylinder_sides\nmap_Kd %s\nnewmtl cylinder_caps\nmap_Kd %s", cylinder.sideTextureName(), cylinder.topTextureName());
+    public static String getMtlFileContents(CylinderShape cylinder) {
+        return String.format("newmtl cylinder_sides\nmap_Kd %s\nnewmtl cylinder_caps\nmap_Kd %s", cylinder.sideTextureName, cylinder.topTextureName);
     }
 
-    public static String buildCylinderMesh(CylinderType cylinder) {
+    public static String buildMesh(CylinderShape cylinder) {
 
         float offsetX = 0.0f;
         float offsetY = 0.0f;
         float offsetZ = 0.0f;
 
-        if (cylinder.centered()) {
-            offsetX = (float) (0.5 - (cylinder.sizeX() / 2.0f));
-            offsetY = (float) (0.5 - (cylinder.sizeY() / 2.0f));
-            offsetZ = (float) (0.5 - (cylinder.sizeZ() / 2.0f));
+        if (cylinder.centered) {
+            offsetX = (float) (0.5 - (cylinder.size.x() / 2.0f));
+            offsetY = (float) (0.5 - (cylinder.size.y() / 2.0f));
+            offsetZ = (float) (0.5 - (cylinder.size.z() / 2.0f));
         }
 
         List<Vector3f> vertices = new ArrayList<>();
@@ -94,11 +50,11 @@ public class CylinderMeshProvider implements DataProvider {
 
         // Geometry
 
-        int tiles = Math.max(1, (int) Math.round(cylinder.repeatFrequency()));
+        int tiles = Math.max(1, (int) Math.round(cylinder.repeatFrequency));
 
         int[] segmentsPerTile = new int[tiles];
-        int baseValue = cylinder.numSides() / tiles;
-        int remainder = cylinder.numSides() % tiles;
+        int baseValue = cylinder.numSides / tiles;
+        int remainder = cylinder.numSides % tiles;
 
         for (int t = 0; t < tiles; t++) {
             segmentsPerTile[t] = baseValue + (t < remainder ? 1 : 0);
@@ -115,10 +71,10 @@ public class CylinderMeshProvider implements DataProvider {
                 }
                 globalI += k;
 
-                double angle = 2 * Math.PI * globalI / cylinder.numSides();
-                double vx = (0.5 + 0.5 * Math.cos(angle)) * cylinder.sizeX() + offsetX;
-                double vz = (0.5 + 0.5 * Math.sin(angle)) * cylinder.sizeZ() + offsetZ;
-                double uRaw = (angle / (2 * Math.PI)) * cylinder.repeatFrequency();
+                double angle = 2 * Math.PI * globalI / cylinder.numSides;
+                double vx = (0.5 + 0.5 * Math.cos(angle)) * cylinder.size.x() + offsetX;
+                double vz = (0.5 + 0.5 * Math.sin(angle)) * cylinder.size.z() + offsetZ;
+                double uRaw = (angle / (2 * Math.PI)) * cylinder.repeatFrequency;
                 double u = (k == segs) ? 1.0 : (uRaw - Math.floor(uRaw));
                 double nx = Math.cos(angle);
                 double nz = Math.sin(angle);
@@ -136,7 +92,7 @@ public class CylinderMeshProvider implements DataProvider {
                 vertices.add(
                         new Vector3f(
                                 (float) (vx),
-                                (float) (cylinder.sizeY() + offsetY),
+                                (float) (cylinder.size.y() + offsetY),
                                 (float) (vz)
                         )
                 );
@@ -170,7 +126,7 @@ public class CylinderMeshProvider implements DataProvider {
         int centerIndex = vertices.size() + 1;
         vertices.add(
                 new Vector3f(
-                        0.5f * cylinder.sizeX() + offsetX, 0.0f + offsetY, 0.5f * cylinder.sizeZ() + offsetZ
+                        0.5f * cylinder.size.x() + offsetX, 0.0f + offsetY, 0.5f * cylinder.size.z() + offsetZ
                 )
         );
 
@@ -178,13 +134,13 @@ public class CylinderMeshProvider implements DataProvider {
         normals.add(new Vector3f(0.0f, -1.0f, 0.0f));
 
         int ringStart = vertices.size() + 1;
-        for (int i = 0; i < cylinder.numSides(); i++) {
-            double angle = 2.0 * Math.PI * i / cylinder.numSides();
+        for (int i = 0; i < cylinder.numSides; i++) {
+            double angle = 2.0 * Math.PI * i / cylinder.numSides;
             vertices.add(
                     new Vector3f(
-                            (float) ((0.5 + 0.5 * Math.cos(angle)) * cylinder.sizeX() + offsetX),
+                            (float) ((0.5 + 0.5 * Math.cos(angle)) * cylinder.size.x() + offsetX),
                             (float) (0.0 + offsetY),
-                            (float) ((0.5 + 0.5 * Math.sin(angle)) * cylinder.sizeZ() + offsetZ)
+                            (float) ((0.5 + 0.5 * Math.sin(angle)) * cylinder.size.z() + offsetZ)
                     )
             );
             UVs.add(
@@ -194,10 +150,10 @@ public class CylinderMeshProvider implements DataProvider {
 
         }
 
-        for (int i = 0; i < cylinder.numSides(); i++) {
+        for (int i = 0; i < cylinder.numSides; i++) {
             int v1 = centerIndex;
             int v2 = ringStart + i;
-            int v3 = ringStart + ((i + 1) % cylinder.numSides());
+            int v3 = ringStart + ((i + 1) % cylinder.numSides);
             capFaces.add(String.format("f %s/%s/%s %s/%s/%s %s/%s/%s", v1, v1, v1, v2, v2, v2, v3, v3, v3));
         }
 
@@ -205,9 +161,9 @@ public class CylinderMeshProvider implements DataProvider {
         int centerIndexTop = vertices.size() + 1;
         vertices.add(
                 new Vector3f(
-                        0.5f * cylinder.sizeX() + offsetX,
-                        cylinder.sizeY() + offsetY,
-                        0.5f * cylinder.sizeZ() + offsetZ
+                        0.5f * cylinder.size.x() + offsetX,
+                        cylinder.size.y() + offsetY,
+                        0.5f * cylinder.size.z() + offsetZ
                 )
         );
 
@@ -216,13 +172,13 @@ public class CylinderMeshProvider implements DataProvider {
         );
         normals.add(new Vector3f(0.0f, 1.0f, 0.0f));
         int ringStartTop = vertices.size() + 1;
-        for (int i = 0; i < cylinder.numSides(); i++) {
-            double angle = 2 * Math.PI * i / cylinder.numSides();
+        for (int i = 0; i < cylinder.numSides; i++) {
+            double angle = 2 * Math.PI * i / cylinder.numSides;
             vertices.add(
                     new Vector3f(
-                            (float) ((0.5 + 0.5 * Math.cos(angle)) * cylinder.sizeX() + offsetX),
-                            (float) (cylinder.sizeY() + offsetY),
-                            (float) ((0.5 + 0.5 * Math.sin(angle)) * cylinder.sizeZ() + offsetZ)
+                            (float) ((0.5 + 0.5 * Math.cos(angle)) * cylinder.size.x() + offsetX),
+                            (float) (cylinder.size.y() + offsetY),
+                            (float) ((0.5 + 0.5 * Math.sin(angle)) * cylinder.size.z() + offsetZ)
                     )
             );
             UVs.add(
@@ -231,9 +187,9 @@ public class CylinderMeshProvider implements DataProvider {
             normals.add(new Vector3f(0.0f, 1.0f, 0.0f));
         }
 
-        for (int i = 0; i < cylinder.numSides(); i++) {
+        for (int i = 0; i < cylinder.numSides; i++) {
             int v1 = centerIndexTop;
-            int v2 = ringStartTop + ((i + 1) % cylinder.numSides());
+            int v2 = ringStartTop + ((i + 1) % cylinder.numSides);
             int v3 = ringStartTop + i;
 
             capFaces.add(String.format("f %s/%s/%s %s/%s/%s %s/%s/%s", v1, v1, v1, v2, v2, v2, v3, v3, v3));
@@ -244,7 +200,7 @@ public class CylinderMeshProvider implements DataProvider {
         StringBuilder builder = new StringBuilder();
 
         builder.append("# Cylinder\n");
-        builder.append(String.format("o cylinder\nmtllib %s.mtl\n", cylinder.name()));
+        builder.append(String.format("o cylinder\nmtllib %s.mtl\n", cylinder.name));
         for (Vector3f vertex : vertices) {
             builder.append(String.format("v %s %s %s\n", vertex.x(), vertex.y(), vertex.z()));
         }
@@ -270,10 +226,4 @@ public class CylinderMeshProvider implements DataProvider {
 
 
     }
-
-    @Override
-    public @NotNull String getName() {
-        return "Cylinder Mesh Provider (" + modId + ")";
-    }
-
 }

@@ -1,19 +1,16 @@
 package com.circularblocks;
 
+import com.circularblocks.loaders.MeshLoader;
+import com.circularblocks.shapes.ShapeAppareance;
+import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
+import com.circularblocks.types.Vector3;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,8 +24,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(CircularBlocks.MODID)
@@ -46,7 +44,7 @@ public class CircularBlocks
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
 
-    public static final CylindersRegistries cylindersRegistries = new CylindersRegistries(BLOCKS, ITEMS);
+    public static final ShapeRegistries MESH_REGISTRIES = new ShapeRegistries(BLOCKS, ITEMS, CREATIVE_MODE_TABS);
 
 
 
@@ -67,68 +65,34 @@ public class CircularBlocks
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-        cylindersRegistries.createCylinderType(
-                new CylinderType(
-                        "cylinder", "minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top",
-                        4.0f, 1.0f, 1.0f, 1.0f, false, 32
-                )
+        CylinderGroupConfiguration cylinderGroupConfiguration = new CylinderGroupConfiguration(
+                List.of(new Vector3(1.0f, 1.0f, 1.0f), new Vector3(2.0f, 1.0f, 2.0f), new Vector3(3.0f, 1.0f, 3.0f)),
+                List.of("", "_2x2", "_3x3"),
+                List.of(32, 32, 32),
+                List.of(false, false, true),
+                List.of(4.0f, 8.0f, 8.0f)
         );
 
-        cylindersRegistries.createCylinderType(
-                new CylinderType(
-                        "cylinder_2x2", "minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top",
-                        8.0f, 2.0f, 1.0f, 2.0f, false, 32
-                )
+        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+                new ShapeAppareance("minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top"),
+                "quartz_pillar_cylinder"
         );
 
-        cylindersRegistries.createCylinderType(
-                new CylinderType(
-                        "cylinder_3x3", "minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top",
-                        8.0f, 3.0f, 1.0f, 3.0f, true, 32
-                )
+        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+                new ShapeAppareance("minecraft:block/iron_block", "minecraft:block/iron_block"),
+                "iron_block_cylinder"
         );
 
-        cylindersRegistries.createCylinderType(
-                new CylinderType(
-                        "iron_cylinder", "minecraft:block/iron_block", "minecraft:block/iron_block",
-                        1.0f, 1.0f, 1.0f, 1.0f, false, 32
-                )
-        );
+        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+                new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
+                "oak_log_cylinder");
 
-        cylindersRegistries.createCylinderType(
-                new CylinderType(
-                        "iron_cylinder_2x2", "minecraft:block/iron_block", "minecraft:block/iron_block",
-                        1.0f, 2.0f, 1.0f, 2.0f, false, 32
-                )
-        );
-
-        cylindersRegistries.createCylinderType(
-                new CylinderType(
-                        "iron_cylinder_3x3", "minecraft:block/iron_block", "minecraft:block/iron_block",
-                        1.0f, 3.0f, 1.0f, 3.0f, true, 32
-                )
-        );
-
-        cylindersRegistries.createCylinderType(
-                new CylinderType("stone_cylinder", "minecraft:block/stone", "minecraft:block/stone",
-                        1.0f, 1.0f, 1.0f, 1.0f, false, 32)
-        );
-
-        cylindersRegistries.createCylinderType(
-                new CylinderType("oak_log_cylinder", "minecraft:block/oak_log", "minecraft:block/oak_log_top",
-                        4.0f, 1.0f, 1.0f, 1.0f, false, 32)
-        );
-
-        cylindersRegistries.registerBlocksAndItems();
+        MESH_REGISTRIES.registerBlocksAndItems();
 
 
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-
-        LOGGER.info("RESOURCES CHECK: {}",
-                getClass().getResourceAsStream("/assets/circularblocks/models/block/cylinder_model.json") != null
-                        ? "FOUND" : "NOT FOUND");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

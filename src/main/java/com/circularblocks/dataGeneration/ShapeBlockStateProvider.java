@@ -1,5 +1,7 @@
-package com.circularblocks;
+package com.circularblocks.dataGeneration;
 
+import com.circularblocks.CircularBlocks;
+import com.circularblocks.shapes.Shape;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.data.PackOutput;
@@ -14,14 +16,13 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CylinderBlockStateProvider extends BlockStateProvider {
+public class ShapeBlockStateProvider extends BlockStateProvider {
 
     private final String ModId;
 
-    public CylinderBlockStateProvider(PackOutput output, String modid, ExistingFileHelper exFileHelper) {
+    public ShapeBlockStateProvider(PackOutput output, String modid, ExistingFileHelper exFileHelper) {
         super(output, modid, exFileHelper);
 
         this.ModId = modid;
@@ -31,18 +32,18 @@ public class CylinderBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         // Replace this loop with your actual block registry objects or names
 
-        List<CylinderType> cylinders = CircularBlocks.cylindersRegistries.getCylinders();
+        List<Shape> shapes = CircularBlocks.MESH_REGISTRIES.getShapes();
 
-        for (CylinderType cylinder : cylinders) {
+        for (Shape shape : shapes) {
 
-            String name = cylinder.name();
+            String name = shape.name;
             ResourceLocation objectLocation = new ResourceLocation(this.ModId, "models/item/" + name + ".obj");
 
 // 1. Define the Block Model
             BlockModelBuilder compositeModel = models().withExistingParent(name + "_model", "forge:item/default")
                     .renderType("cutout_mipped")
                     .ao(false)
-                    .texture("particle", "minecraft:block/quartz_block_side");
+                    .texture("particle", shape.sideTextureName);
 
 // 2. Build the Composite Loader with manual JSON override
             compositeModel.customLoader((builder, helper) -> new CompositeModelBuilder<BlockModelBuilder>(builder, helper) {
@@ -60,8 +61,8 @@ public class CylinderBlockStateProvider extends BlockStateProvider {
                     JsonObject display = new JsonObject();
                     JsonObject gui = new JsonObject();
                     JsonArray rotation = new JsonArray();
-                    rotation.add(-48);
-                    rotation.add(-86);
+                    rotation.add(-45);
+                    rotation.add(-45);
                     rotation.add(0);
                     gui.add("rotation", rotation);
                     JsonArray scale = new JsonArray();
@@ -73,9 +74,9 @@ public class CylinderBlockStateProvider extends BlockStateProvider {
 
                     JsonObject thirdperson_righthand = new JsonObject();
                     JsonArray rotation2 = new JsonArray();
-                    rotation2.add(-42);
-                    rotation2.add(-50);
-                    rotation2.add(-47);
+                    rotation2.add(-45);
+                    rotation2.add(-45);
+                    rotation2.add(-45);
                     thirdperson_righthand.add("rotation", rotation2);
                     JsonArray scale2 = new JsonArray();
                     scale2.add(0.25);
@@ -131,7 +132,7 @@ public class CylinderBlockStateProvider extends BlockStateProvider {
                         super.toJson(json);
                         // Manually inject your custom fields into the JSON
                         json.addProperty("model", ModId + ":models/item/" + name + ".obj");
-                        json.addProperty("emissive_ambient", true);
+                        json.addProperty("emissive_ambient", false);
                         return json;
                     }
                 })

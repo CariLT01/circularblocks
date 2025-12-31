@@ -1,4 +1,4 @@
-package com.circularblocks;
+package com.circularblocks.dataGeneration;
 
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
