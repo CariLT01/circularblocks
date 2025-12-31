@@ -1,5 +1,7 @@
 package com.circularblocks.shapes;
 
+import com.circularblocks.shapes.shapeSettings.CylinderShapeSettings;
+
 public class CylinderShape extends Shape {
 
         public final float repeatFrequency;

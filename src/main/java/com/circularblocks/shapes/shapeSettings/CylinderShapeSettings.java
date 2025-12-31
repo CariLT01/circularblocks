@@ -1,4 +1,4 @@
-package com.circularblocks.shapes;
+package com.circularblocks.shapes.shapeSettings;
 
 public record CylinderShapeSettings(ShapeSettings meshSettings, int sides, boolean centered, float repeatFrequency) {
 }

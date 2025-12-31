@@ -7,6 +7,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -111,6 +113,16 @@ public class ShapeBlockStateProvider extends BlockStateProvider {
                         .modelForState().modelFile(compositeModel).rotationX(90).addModel()
                         .partialState().with(RotatedPillarBlock.AXIS, net.minecraft.core.Direction.Axis.X)
                         .modelForState().modelFile(compositeModel).rotationX(90).rotationY(90).addModel();
+            } else if (block instanceof HorizontalDirectionalBlock horizontal) {
+                getVariantBuilder(horizontal)
+                        .partialState().with(HorizontalDirectionalBlock.FACING, net.minecraft.core.Direction.NORTH)
+                        .modelForState().modelFile(compositeModel).addModel()
+                        .partialState().with(HorizontalDirectionalBlock.FACING, net.minecraft.core.Direction.SOUTH)
+                        .modelForState().modelFile(compositeModel).rotationY(180).addModel()
+                        .partialState().with(HorizontalDirectionalBlock.FACING, net.minecraft.core.Direction.EAST)
+                        .modelForState().modelFile(compositeModel).rotationY(90).addModel()
+                        .partialState().with(HorizontalDirectionalBlock.FACING, net.minecraft.core.Direction.WEST)
+                        .modelForState().modelFile(compositeModel).rotationY(270).addModel();
             } else {
                 simpleBlock(block, compositeModel);
             }

@@ -3,6 +3,8 @@ package com.circularblocks;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.ShapeGroupConfiguration;
+import com.circularblocks.shapes.shapeSettings.CylinderShapeSettings;
+import com.circularblocks.shapes.shapeSettings.ShapeSettings;
 import com.circularblocks.types.Vector3;
 
 import java.util.ArrayList;
@@ -32,7 +34,8 @@ public class ShapeGroupCreationDispatcher {
                                                 baseName + suffixedName,
                                                 appareance.sideTextureName(),
                                                 appareance.topTextureName(),
-                                                size
+                                                size,
+                                                ShapePlacementBehavior.ROTATED_PILLAR_BLOCK
                                         ),
                                         numSides,
                                         centered,

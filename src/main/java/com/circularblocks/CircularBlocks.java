@@ -1,8 +1,10 @@
 package com.circularblocks;
 
 import com.circularblocks.loaders.MeshLoader;
-import com.circularblocks.shapes.ShapeAppareance;
+import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
+import com.circularblocks.shapes.shapeSettings.QuarterCylinderShapeSettings;
+import com.circularblocks.shapes.shapeSettings.ShapeSettings;
 import com.circularblocks.types.Vector3;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -86,6 +88,40 @@ public class CircularBlocks
         MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
                 "oak_log_cylinder");
+
+        MESH_REGISTRIES.addShape(
+                new QuarterCylinderShape(
+                        new QuarterCylinderShapeSettings(
+                                new ShapeSettings(
+                                        "iron_block_quarter_cylinder",
+                                        "minecraft:block/iron_block",
+                                        "minecraft:block/iron_block",
+                                        new Vector3(1.0f, 1.0f, 1.0f),
+                                        ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL
+                                ),
+                                32,
+                                false,
+                                1.0f
+                        )
+                )
+        );
+
+        MESH_REGISTRIES.addShape(
+                new QuarterCylinderShape(
+                        new QuarterCylinderShapeSettings(
+                                new ShapeSettings(
+                                        "quartz_block_quarter_cylinder",
+                                        "minecraft:block/quartz_block_side",
+                                        "minecraft:block/quartz_block_side",
+                                        new Vector3(1.0f, 1.0f, 1.0f),
+                                        ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL
+                                ),
+                                32,
+                                false,
+                                1.0f
+                        )
+                )
+        );
 
         MESH_REGISTRIES.registerBlocksAndItems();
 
