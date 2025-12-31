@@ -34,7 +34,16 @@ public class RecipeProvider {
                 ingredients.add(block2);
                 ingredients.add(block3);
 
-            }else{
+            }else if(shape.name.contains("quarter")){
+                String blockname = "circularblocks:" + shape.name.replace("_quarter", "");
+                JsonObject block1 = new JsonObject();
+                block1.addProperty("item", blockname);
+                JsonObject block2 = new JsonObject();
+                block2.addProperty("item", "minecraft:stick");
+                ingredients.add(block1);
+                ingredients.add(block2);
+            }
+            else{
                 String blockname = shape.sideTextureName.replace("minecraft:block/", "minecraft:");
                 JsonObject block1 = new JsonObject();
                 block1.addProperty("item", "circularblocks:cobblestone_cylinder");
