@@ -5,6 +5,8 @@ import com.circularblocks.meshBuilders.QuarterCylinderMeshBuilder;
 import com.circularblocks.shapes.CylinderShape;
 import com.circularblocks.shapes.QuarterCylinderShape;
 import com.circularblocks.shapes.Shape;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class ShapeMeshBuilderDispatcher {
 
@@ -28,5 +30,4 @@ public class ShapeMeshBuilderDispatcher {
 
         throw new IllegalArgumentException("Shape type not recognized in ShapeMeshBuilderDispatcher");
     }
-
 }

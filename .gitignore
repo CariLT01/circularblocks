@@ -31,3 +31,4 @@ cylinder.obj
 
 src/generated/resources/assets/
 src/generated/resources/.cache/*
+src/generated/resources/data/*

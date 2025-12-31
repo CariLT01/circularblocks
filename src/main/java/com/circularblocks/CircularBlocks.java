@@ -50,8 +50,9 @@ public class CircularBlocks
 
 
 
-    public CircularBlocks(FMLJavaModLoadingContext context)
+    public CircularBlocks()
     {
+        final FMLJavaModLoadingContext context = FMLJavaModLoadingContext.get();
         IEventBus modEventBus = context.getModEventBus();
 
         // Register the commonSetup method for modloading
@@ -88,6 +89,10 @@ public class CircularBlocks
         MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
                 "oak_log_cylinder");
+
+        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+                new ShapeAppareance("minecraft:block/cobblestone", "minecraft:block/cobblestone"),
+                "cobblestone_cylinder");
 
         MESH_REGISTRIES.addShape(
                 new QuarterCylinderShape(

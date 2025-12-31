@@ -27,6 +27,7 @@ public class ShapeMeshProvider implements DataProvider {
     public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cache) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         Path folderPath = output.getOutputFolder().resolve("assets/" + modId + "/models/item");
+        Path recipePath = output.getOutputFolder().resolve("data/" + modId + "/recipes");
 
         for (Shape shape : registries.getShapes()) {
             // Handle OBJ
@@ -36,6 +37,9 @@ public class ShapeMeshProvider implements DataProvider {
 
                     saveFile(cache, builtMesh.objFileContents(), folderPath.resolve(shape.name + ".obj"));
                     saveFile(cache, builtMesh.mtlFileContents(), folderPath.resolve(shape.name + ".mtl"));
+
+                    String recipe = RecipeProvider.buildRecipe(shape);
+                    saveFile(cache, recipe, recipePath.resolve(shape.name + ".json"));
 
                 } catch (Exception e) {
                     throw new RuntimeException("Failed to generate mesh for " + shape.name, e);
