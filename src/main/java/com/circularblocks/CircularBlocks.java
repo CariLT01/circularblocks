@@ -2,7 +2,9 @@ package com.circularblocks;
 
 import com.circularblocks.loaders.MeshLoader;
 import com.circularblocks.shapes.*;
+import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
+import com.circularblocks.shapes.shapeSettings.AngledCylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.QuarterCylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.ShapeSettings;
 import com.circularblocks.types.Vector3f;
@@ -70,20 +72,29 @@ public class CircularBlocks
         MinecraftForge.EVENT_BUS.register(this);
 
         CylinderGroupConfiguration cylinderGroupConfiguration = new CylinderGroupConfiguration(
-                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(2.0f, 1.0f, 2.0f), new Vector3f(3.0f, 1.0f, 3.0f)),
-                List.of("", "_2x2", "_3x3"),
-                List.of(32, 32, 32),
-                List.of(false, false, true),
-                List.of(4.0f, 8.0f, 8.0f),
+                List.of(new Vector3f(0.25f, 1.0f, 0.25f), new Vector3f(0.5f, 1.0f, 0.5f), new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(2.0f, 1.0f, 2.0f), new Vector3f(3.0f, 1.0f, 3.0f)),
+                List.of("_mini", "_half", "", "_2x2", "_3x3"),
+                List.of(16, 16, 32, 32, 32),
+                List.of(true, true, false, false, true),
+                List.of(1.0f, 2.0f, 4.0f, 8.0f, 8.0f),
                 false
         );
 
         CylinderGroupConfiguration cylinderGroupConfigurationPlanar = new CylinderGroupConfiguration(
-                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(2.0f, 1.0f, 2.0f), new Vector3f(3.0f, 1.0f, 3.0f)),
-                List.of("", "_2x2", "_3x3"),
-                List.of(32, 32, 32),
-                List.of(false, false, true),
-                List.of(4.0f, 8.0f, 8.0f),
+                List.of(new Vector3f(0.25f, 1.0f, 0.25f), new Vector3f(0.5f, 1.0f, 0.5f), new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(2.0f, 1.0f, 2.0f), new Vector3f(3.0f, 1.0f, 3.0f)),
+                List.of("_mini", "_half", "", "_2x2", "_3x3"),
+                List.of(16, 16, 32, 32, 32),
+                List.of(true, true, false, false, true),
+                List.of(1.0f, 2.0f, 4.0f, 8.0f, 8.0f),
+                true
+        );
+
+        AngledCylinderGroupConfiguration angledCylinderGroupConfiguration = new AngledCylinderGroupConfiguration(
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),
+                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f)),
+                List.of("", "_1x2", "_1x3","r", "_rx2", "_rx3"),
+                List.of(32, 32, 32, 32, 32, 32),
+                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
                 true
         );
 
@@ -105,6 +116,11 @@ public class CircularBlocks
                 new ShapeAppareance("minecraft:block/cobblestone", "minecraft:block/cobblestone"),
                 "cobblestone_cylinder");
 
+        SHAPE_REGISTRIES.createShapeGroup(angledCylinderGroupConfiguration,
+                new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
+                "quartz_block_angled_cylinder");
+
+
         SHAPE_REGISTRIES.addShape(
                 new QuarterCylinderShape(
                         new QuarterCylinderShapeSettings(
@@ -122,6 +138,8 @@ public class CircularBlocks
                 )
         );
 
+
+
         SHAPE_REGISTRIES.addShape(
                 new QuarterCylinderShape(
                         new QuarterCylinderShapeSettings(
@@ -138,6 +156,7 @@ public class CircularBlocks
                         )
                 )
         );
+
 
         SHAPE_REGISTRIES.registerBlocksAndItems();
 

@@ -1,7 +1,9 @@
 package com.circularblocks.dataGeneration;
 
+import com.circularblocks.meshBuilders.AngledCylinderMeshBuilder;
 import com.circularblocks.meshBuilders.CylinderMeshBuilder;
 import com.circularblocks.meshBuilders.QuarterCylinderMeshBuilder;
+import com.circularblocks.shapes.AngledCylinderShape;
 import com.circularblocks.shapes.CylinderShape;
 import com.circularblocks.shapes.QuarterCylinderShape;
 import com.circularblocks.shapes.Shape;
@@ -24,6 +26,14 @@ public class ShapeMeshBuilderDispatcher {
             // Quarter Cylinder
             String objFileContents = QuarterCylinderMeshBuilder.buildMesh((QuarterCylinderShape) shape);
             String mtlFileContents = QuarterCylinderMeshBuilder.getMtlFileContents((QuarterCylinderShape) shape);
+
+            return new ShapeBuiltMeshResult(mtlFileContents, objFileContents);
+        } else if (shape instanceof AngledCylinderShape) {
+            System.out.println("KKKKK"+shape.name+":"+shape.getClass().getName());
+
+            // Angled Cylinder
+            String objFileContents = AngledCylinderMeshBuilder.buildMesh((AngledCylinderShape) shape);
+            String mtlFileContents = AngledCylinderMeshBuilder.getMtlFileContents((AngledCylinderShape) shape);
 
             return new ShapeBuiltMeshResult(mtlFileContents, objFileContents);
         }
