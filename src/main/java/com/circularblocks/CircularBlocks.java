@@ -87,6 +87,10 @@ public class CircularBlocks
                 new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
                 "oak_log_cylinder");
 
+        MESH_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+                new ShapeAppareance("minecraft:block/cobblestone", "minecraft:block/cobblestone"),
+                "cobblestone_cylinder");
+
         MESH_REGISTRIES.registerBlocksAndItems();
 
 
