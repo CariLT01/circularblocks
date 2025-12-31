@@ -1,8 +1,10 @@
 package com.circularblocks;
 
 import com.circularblocks.shapes.*;
+import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.ShapeGroupConfiguration;
+import com.circularblocks.shapes.shapeSettings.AngledCylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.CylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.ShapeSettings;
 import com.circularblocks.types.Vector3f;
@@ -16,10 +18,8 @@ public class ShapeGroupCreationDispatcher {
 
         List<Shape> shapeList = new ArrayList<>();
 
-        if (groupType instanceof CylinderGroupConfiguration) {
+        if (groupType instanceof CylinderGroupConfiguration cylinderConfig) {
             for (int i = 0; i < groupType.sizes.size(); i++) {
-
-                CylinderGroupConfiguration cylinderConfig = (CylinderGroupConfiguration) groupType;
 
                 String suffixedName = cylinderConfig.appendedNames.get(i);
                 Vector3f size = cylinderConfig.sizes.get(i);
@@ -50,7 +50,38 @@ public class ShapeGroupCreationDispatcher {
             }
 
 
-        } else {
+        } else if (groupType instanceof AngledCylinderGroupConfiguration cylinderConfig) {
+            for (int i = 0; i < groupType.sizes.size(); i++) {
+
+                String suffixedName = cylinderConfig.appendedNames.get(i);
+                Vector3f size = cylinderConfig.sizes.get(i);
+                int numSides = cylinderConfig.numSides.get(i);
+                float repeatFreq = cylinderConfig.repeatFrequency.get(i);
+
+                shapeList.add(
+                        new AngledCylinderShape(
+                                new AngledCylinderShapeSettings(
+                                        new ShapeSettings(
+                                                baseName + suffixedName,
+                                                appareance.sideTextureName(),
+                                                appareance.topTextureName(),
+                                                size,
+                                                ShapePlacementBehavior.ROTATED_PILLAR_BLOCK
+                                        ),
+                                        numSides,
+                                        true,
+                                        repeatFreq,
+                                        cylinderConfig.usePlanarMapping
+
+
+                                )
+                        )
+                );
+
+            }
+        }
+
+        else {
             throw new IllegalArgumentException("Unrecognized configuration type");
         }
 
