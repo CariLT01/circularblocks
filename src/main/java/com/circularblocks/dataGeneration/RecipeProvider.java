@@ -45,7 +45,7 @@ public class RecipeProvider {
             }
             json.add("ingredients", ingredients);
             JsonObject result = new JsonObject();
-            result.addProperty("item", shape.name);
+            result.addProperty("item", "circularblocks:" + shape.name);
             result.addProperty("count", 1);
             json.add("result", result);
             return json.toString();
