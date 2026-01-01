@@ -130,12 +130,21 @@ public class CircularBlocks
         );
 
         AngledCylinderGroupConfiguration angledCylinderGroupConfiguration = new AngledCylinderGroupConfiguration(
-                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),new Vector3f(1.0f, 5.0f, 5.0f),
-                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f), new Vector3f(1.0f, 5.0f, -5.0f)),
-                List.of("", "_1x2", "_1x3", "_1x4", "_1x5", "r", "_rx2", "_rx3", "_rx4", "_rx5"),
-                List.of(16, 16, 16, 16, 16, 16, 16, 16, 16, 16),
-                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
-                true
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),
+                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f)),
+                List.of("", "_1x2", "_1x3", "_1x4", "r", "_rx2", "_rx3", "_rx4"),
+                List.of(16, 16, 16, 16, 16, 16, 16, 16),
+                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
+                true, true
+        );
+
+        AngledCylinderGroupConfiguration angledCylinderGroupConfigurationFace = new AngledCylinderGroupConfiguration(
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),
+                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f)),
+                List.of("", "_1x2", "_1x3", "_1x4", "r", "_rx2", "_rx3", "_rx4"),
+                List.of(16, 16, 16, 16, 16, 16, 16, 16),
+                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
+                true, false
         );
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
@@ -197,6 +206,10 @@ public class CircularBlocks
         SHAPE_REGISTRIES.createShapeGroup(angledCylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
                 "quartz_block_angled_cylinder");
+
+        SHAPE_REGISTRIES.createShapeGroup(angledCylinderGroupConfigurationFace,
+                new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
+                "quartz_block_angled_cylinder_face");
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
                 new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
