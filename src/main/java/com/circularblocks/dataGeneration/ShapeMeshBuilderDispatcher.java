@@ -32,7 +32,13 @@ public class ShapeMeshBuilderDispatcher {
             System.out.println("KKKKK"+shape.name+":"+shape.getClass().getName());
 
             // Angled Cylinder
-            String objFileContents = AngledCylinderMeshBuilder.buildMesh((AngledCylinderShape) shape);
+            String objFileContents;
+            if(shape.name.contains("face")){
+                objFileContents = AngledCylinderMeshBuilder.buildMeshFace((AngledCylinderShape) shape);
+            }
+            else{
+                objFileContents = AngledCylinderMeshBuilder.buildMesh((AngledCylinderShape) shape);
+            }
             String mtlFileContents = AngledCylinderMeshBuilder.getMtlFileContents((AngledCylinderShape) shape);
 
             return new ShapeBuiltMeshResult(mtlFileContents, objFileContents);

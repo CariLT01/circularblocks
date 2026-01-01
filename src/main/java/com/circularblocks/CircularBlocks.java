@@ -4,6 +4,7 @@ import com.circularblocks.loaders.LoaderType;
 import com.circularblocks.loaders.MeshLoader;
 import com.circularblocks.loaders.MimicMeshLoader;
 import com.circularblocks.mimics.MimicCylinderBlock;
+import com.circularblocks.mimics.MimicCylinderBlockEntity;
 import com.circularblocks.mimics.MimicPolarCylinderBlockEntity;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.api.distmarker.Dist;
@@ -135,13 +137,21 @@ public class CircularBlocks
         );
 
         AngledCylinderGroupConfiguration angledCylinderGroupConfiguration = new AngledCylinderGroupConfiguration(
-                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),
-                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f)),
-                List.of("", "_1x2", "_1x3","r", "_rx2", "_rx3"),
-                List.of(32, 32, 32, 32, 32, 32),
-                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
-                true,
-                LoaderType.MESH_LOADER
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),
+                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f)),
+                List.of("", "_1x2", "_1x3", "_1x4", "r", "_rx2", "_rx3", "_rx4"),
+                List.of(16, 16, 16, 16, 16, 16, 16, 16),
+                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
+                true, LoaderType.MESH_LOADER, true
+        );
+
+        AngledCylinderGroupConfiguration angledCylinderGroupConfigurationFace = new AngledCylinderGroupConfiguration(
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),
+                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f)),
+                List.of("", "_1x2", "_1x3", "_1x4", "r", "_rx2", "_rx3", "_rx4"),
+                List.of(16, 16, 16, 16, 16, 16, 16, 16),
+                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
+                true, LoaderType.MESH_LOADER, false
         );
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationMimic,
@@ -211,6 +221,10 @@ public class CircularBlocks
         SHAPE_REGISTRIES.createShapeGroup(angledCylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
                 "quartz_block_angled_cylinder");
+
+        SHAPE_REGISTRIES.createShapeGroup(angledCylinderGroupConfigurationFace,
+                new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
+                "quartz_block_angled_cylinder_face");
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
                 new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
