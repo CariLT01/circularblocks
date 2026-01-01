@@ -2,7 +2,7 @@ package com.circularblocks;
 
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.ShapeGroupConfiguration;
-import net.minecraft.core.Direction;
+import com.circularblocks.types.Vector3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -20,9 +19,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
+import java.util.*;
 
 public class ShapeRegistries {
 
@@ -30,6 +27,8 @@ public class ShapeRegistries {
     private final DeferredRegister<Item> ITEMS;
     private final DeferredRegister<CreativeModeTab> CREATIVE_TABS;
     private final List<Shape> meshShapes = new ArrayList<>();
+    private final Map<String, List<Vector3i>> collisionBoxes = new HashMap<>();
+
 
     public ShapeRegistries(DeferredRegister<Block> blocksRegistries, DeferredRegister<Item> itemsRegistries, DeferredRegister<CreativeModeTab> creativeModTab) {
         this.BLOCKS = blocksRegistries;
@@ -49,6 +48,20 @@ public class ShapeRegistries {
         }
     }
 
+    public void batchedCreateShapeGroup(ShapeGroupConfiguration configuration, List<String> names, String baseTopTextureUnformatted, String baseSideTextureUnformatted, String baseBlockNameUnformatted) {
+
+
+        for (String s : names) {
+            String name = String.format(baseBlockNameUnformatted, s);
+            String sideTextureName = String.format(baseSideTextureUnformatted, s);
+            String topTextureName = String.format(baseTopTextureUnformatted, s);
+
+            this.createShapeGroup(configuration, new ShapeAppareance(
+                    sideTextureName, topTextureName
+            ), name);
+        }
+    }
+
     public void registerBlocksAndItems() {
 
 
@@ -59,33 +72,15 @@ public class ShapeRegistries {
             RegistryObject<Block> newBlock = null;
 
             if (shape.placementBehavior == ShapePlacementBehavior.ROTATED_PILLAR_BLOCK) {
-                newBlock = BLOCKS.register(shape.name, () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                newBlock = BLOCKS.register(shape.name, () -> new MeshedBlockPillar(BlockBehaviour.Properties.of()
                         .mapColor(MapColor.QUARTZ)
-                        .strength(5.0f)
+                        .strength(1.0f)
                         .noOcclusion()));
             } else {
-                newBlock = BLOCKS.register(shape.name, () -> new HorizontalDirectionalBlock(BlockBehaviour.Properties.of()
+                newBlock = BLOCKS.register(shape.name, () -> new MeshedBlock(BlockBehaviour.Properties.of()
                         .mapColor(MapColor.QUARTZ)
-                        .strength(5.0f)
-                        .noOcclusion()) {
-
-                    @Override
-                    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-                        // Registers the FACING property (limited to horizontal directions)
-                        builder.add(FACING);
-                    }
-
-                    @Override
-                    public BlockState getStateForPlacement(BlockPlaceContext context) {
-                        // Sets the direction to face the player, but only on the horizontal plane
-                        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
-                    }
-
-                    // Set the starting state
-                    {
-                        registerDefaultState(stateDefinition.any().setValue(FACING, net.minecraft.core.Direction.NORTH));
-                    }
-                });
+                        .strength(1.0f)
+                        .noOcclusion()));
             }
             RegistryObject<Block> finalNewBlock = newBlock;
             registeredItems.add(ITEMS.register(shape.name, () -> new BlockItem(finalNewBlock.get(), new Item.Properties())));
@@ -104,6 +99,22 @@ public class ShapeRegistries {
                         })
                         .build()
         );
+    }
+
+    public void computeCollisionsForEach() {
+        for (Shape shape : meshShapes) {
+            if (!(shape instanceof CylinderShape)) continue;
+
+            ShapeCollisionBlocks block = new ShapeCollisionBlocks(shape.size, ((CylinderShape) shape).centered, CollisionType.CYLINDER);
+
+            List<Vector3i> blocks = block.computeCollisionBlocks();
+
+            collisionBoxes.put(shape.name, blocks);
+        }
+    }
+
+    public Map<String, List<Vector3i>> getCollisionBoxes() {
+        return this.collisionBoxes;
     }
 
     public List<Shape> getShapes() {
