@@ -61,6 +61,7 @@ public class CircularBlocks
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
+
         // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
@@ -111,6 +112,10 @@ public class CircularBlocks
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
                 "oak_log_cylinder");
+
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
+                new ShapeAppareance("minecraft:block/quartz_block", "minecraft:block/quartz_block_top"),
+                "quartz_cylinder");
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
                 new ShapeAppareance("minecraft:block/cobblestone", "minecraft:block/cobblestone"),
