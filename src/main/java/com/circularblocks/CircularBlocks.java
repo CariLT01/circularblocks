@@ -97,11 +97,11 @@ public class CircularBlocks
         );
 
         AngledCylinderGroupConfiguration angledCylinderGroupConfiguration = new AngledCylinderGroupConfiguration(
-                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),
-                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f)),
-                List.of("", "_1x2", "_1x3","r", "_rx2", "_rx3"),
-                List.of(32, 32, 32, 32, 32, 32),
-                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),new Vector3f(1.0f, 5.0f, 5.0f),
+                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f), new Vector3f(1.0f, 5.0f, -5.0f)),
+                List.of("", "_1x2", "_1x3", "_1x4", "_1x5", "r", "_rx2", "_rx3", "_rx4", "_rx5"),
+                List.of(16, 16, 16, 16, 16, 16, 16, 16, 16, 16),
+                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
                 true
         );
 
@@ -156,9 +156,6 @@ public class CircularBlocks
         );
 
 
-        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
-                new ShapeAppareance("minecraft:block/quartz_block", "minecraft:block/quartz_block_top"),
-                "quartz_cylinder");
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
                 new ShapeAppareance("minecraft:block/cobblestone", "minecraft:block/cobblestone"),

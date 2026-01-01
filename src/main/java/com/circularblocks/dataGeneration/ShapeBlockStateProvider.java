@@ -62,8 +62,8 @@ public class ShapeBlockStateProvider extends BlockStateProvider {
                     JsonObject display = new JsonObject();
                     JsonObject gui = new JsonObject();
                     JsonArray rotation = new JsonArray();
-                    rotation.add(-45);
-                    rotation.add(-45);
+                    rotation.add(-75);
+                    rotation.add(-75);
                     rotation.add(0);
                     gui.add("rotation", rotation);
                     JsonArray scale = new JsonArray();
