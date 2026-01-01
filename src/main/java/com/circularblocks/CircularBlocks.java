@@ -4,7 +4,6 @@ import com.circularblocks.loaders.MeshLoader;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
-import com.circularblocks.shapes.shapeSettings.AngledCylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.QuarterCylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.ShapeSettings;
 import com.circularblocks.types.Vector3f;
@@ -15,6 +14,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +29,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -47,6 +48,11 @@ public class CircularBlocks
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "examplemod" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+
+    public static final RegistryObject<Block> PROXY_BLOCK = BLOCKS.register("proxy_block", () -> new ProxyBlock(BlockBehaviour.Properties.of()
+            .strength(1.0f)
+            .noOcclusion()
+            .noParticlesOnBreak()));
 
 
     public static final ShapeRegistries SHAPE_REGISTRIES = new ShapeRegistries(BLOCKS, ITEMS, CREATIVE_MODE_TABS);
@@ -109,9 +115,46 @@ public class CircularBlocks
                 "iron_block_cylinder"
         );
 
-        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
-                new ShapeAppareance("minecraft:block/oak_log", "minecraft:block/oak_log_top"),
-                "oak_log_cylinder");
+        // All log types
+
+
+        SHAPE_REGISTRIES.batchedCreateShapeGroup(
+                cylinderGroupConfiguration,
+                List.of("oak", "birch", "jungle", "spruce", "acacia", "dark_oak", "mangrove", "cherry"),
+                "minecraft:block/%s_log_top",
+                "minecraft:block/%s_log",
+                "%s_log_cylinder"
+        );
+
+        SHAPE_REGISTRIES.batchedCreateShapeGroup(
+                cylinderGroupConfiguration,
+                List.of("oak", "birch", "jungle", "spruce", "acacia", "dark_oak", "mangrove", "cherry"),
+                "minecraft:block/stripped_%s_log_top",
+                "minecraft:block/stripped_%s_log",
+                "stripped_%s_log_cylinder"
+        );
+
+        // Copper
+
+        SHAPE_REGISTRIES.batchedCreateShapeGroup(
+                cylinderGroupConfigurationPlanar,
+                List.of("copper_block", "cut_copper", "exposed_copper", "weathered_copper", "oxidized_copper", "exposed_cut_copper", "weathered_cut_copper", "oxidized_cut_copper"),
+                "minecraft:block/%s",
+                "minecraft:block/%s",
+                "%s_cylinder"
+        );
+
+
+        // Deepslate & Mud & Purpur
+
+        SHAPE_REGISTRIES.batchedCreateShapeGroup(
+                cylinderGroupConfigurationPlanar,
+                List.of("deepslate_bricks", "deepslate_tiles", "deepslate", "cobbled_deepslate", "mud_bricks", "purpur_block"),
+                "minecraft:block/%s",
+                "minecraft:block/%s",
+                "%s_cylinder"
+        );
+
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/quartz_block", "minecraft:block/quartz_block_top"),
@@ -124,6 +167,18 @@ public class CircularBlocks
         SHAPE_REGISTRIES.createShapeGroup(angledCylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
                 "quartz_block_angled_cylinder");
+
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
+                new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_side"),
+                "quartz_block_cylinder");
+
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
+                new ShapeAppareance("minecraft:block/stone_bricks", "minecraft:block/stone_bricks"),
+                "stone_bricks_cylinder");
+
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
+                new ShapeAppareance("minecraft:block/bricks", "minecraft:block/bricks"),
+                "bricks_cylinder");
 
 
         SHAPE_REGISTRIES.addShape(
@@ -164,6 +219,7 @@ public class CircularBlocks
 
 
         SHAPE_REGISTRIES.registerBlocksAndItems();
+        SHAPE_REGISTRIES.computeCollisionsForEach();
 
 
 
