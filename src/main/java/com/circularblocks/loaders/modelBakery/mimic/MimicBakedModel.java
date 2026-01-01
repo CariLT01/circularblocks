@@ -1,6 +1,6 @@
 package com.circularblocks.loaders.modelBakery.mimic;
 
-import com.circularblocks.mimics.MimicCylinderBlockEntity;
+import com.circularblocks.mimics.MimicMeshBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -25,7 +25,7 @@ public class MimicBakedModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData data, @Nullable RenderType renderType) {
-        BlockState mimicState = data.get(MimicCylinderBlockEntity.MIMIC_PROPERTY);
+        BlockState mimicState = data.get(MimicMeshBlockEntity.MIMIC_PROPERTY);
         if (mimicState == null || mimicState.isAir()) {
             return originalModel.getQuads(state, side, rand, data, renderType);
         }
@@ -46,7 +46,7 @@ public class MimicBakedModel extends BakedModelWrapper<BakedModel> {
             // 3. Decide which mimic sprite to use based on your material name
             // Replace "cylinder_sides" and "cylinder_caps" with your actual .mtl names
             TextureAtlasSprite targetSprite = mimicSide;
-            if (templateName.contains("glass") || templateName.contains("glass")) {
+            if (templateName.contains("top")) {
                 targetSprite = mimicCap;
             }
 

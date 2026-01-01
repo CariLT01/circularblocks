@@ -1,8 +1,8 @@
 package com.circularblocks;
 
 import com.circularblocks.loaders.LoaderType;
-import com.circularblocks.mimics.MimicCylinderBlock;
-import com.circularblocks.mimics.MimicPolarCylinderBlockEntity;
+import com.circularblocks.mimics.MimicMeshBlockHorizontal;
+import com.circularblocks.mimics.MimicMeshBlockPillar;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.ShapeGroupConfiguration;
 import com.circularblocks.types.Vector3i;
@@ -11,15 +11,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -69,11 +63,12 @@ public class ShapeRegistries {
         }
     }
 
-    public void registerBlocksAndItems() {
+    public ShapeRegistryResults registerBlocksAndItems() {
 
 
 
         List<RegistryObject<Item>> registeredItems = new ArrayList<>();
+        List<RegistryObject<Block>> allCylinders = new ArrayList<>();
 
         for (Shape shape : meshShapes) {
             RegistryObject<Block> newBlock = null;
@@ -90,26 +85,24 @@ public class ShapeRegistries {
                             .strength(1.0f)
                             .noOcclusion()));
                 }
-                RegistryObject<Block> finalNewBlock = newBlock;
             } else {
-                newBlock = BLOCKS.register(shape.name, () -> new MimicCylinderBlock(
-                        BlockBehaviour.Properties.of()
-                                .mapColor(MapColor.QUARTZ)
-                                .strength(1.0f)
-                                .noOcclusion()
-                ));
+                if (shape.placementBehavior == ShapePlacementBehavior.ROTATED_PILLAR_BLOCK) {
+                    newBlock = BLOCKS.register(shape.name, () -> new MimicMeshBlockPillar(
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(MapColor.QUARTZ)
+                                    .strength(1.0f)
+                                    .noOcclusion()
+                    ));
+                } else {
+                    newBlock = BLOCKS.register(shape.name, () -> new MimicMeshBlockHorizontal(
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(MapColor.QUARTZ)
+                                    .strength(1.0f)
+                                    .noOcclusion()
+                    ));
+                }
+                allCylinders.add(newBlock);
 
-
-// 1. Declare the variable as an array or AtomicReference so the lambda can capture it
-                final RegistryObject<BlockEntityType<MimicPolarCylinderBlockEntity>>[] typeRef = new RegistryObject[1];
-
-                RegistryObject<Block> finalNewBlock1 = newBlock;
-                BLOCK_ENTITIES.register(shape.name, () ->
-                        BlockEntityType.Builder.of(
-                                MimicPolarCylinderBlockEntity::new, // This now matches (pos, state)
-                                finalNewBlock1.get()
-                        ).build(null)
-                );
 
             }
 
@@ -130,6 +123,8 @@ public class ShapeRegistries {
                         })
                         .build()
         );
+
+        return new ShapeRegistryResults(allCylinders);
     }
 
     public void computeCollisionsForEach() {

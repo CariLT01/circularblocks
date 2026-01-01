@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "circularblocks:block/mimic_frame_x"
+  }
+}

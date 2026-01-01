@@ -13,7 +13,7 @@ public class QuarterCylinderMeshBuilder implements MeshBuilder {
     public static String getMtlFileContents(QuarterCylinderShape cylinder) {
 
         if (cylinder.loaderType == LoaderType.MIMIC_MESH_LOADER) {
-            return "newmtl cylinder_sides\nmap_Kd minecraft:block/stone\nnewmtl cylinder_caps\nmap_Kd minecraft:block/glass";
+            return "newmtl cylinder_sides\nmap_Kd circularblocks:block/mimic_frame_x\nnewmtl cylinder_caps\nmap_Kd circularblocks:block/mimic_frame_x_top";
         }
 
         return String.format("newmtl cylinder_sides\nmap_Kd %s\nnewmtl cylinder_caps\nmap_Kd %s",

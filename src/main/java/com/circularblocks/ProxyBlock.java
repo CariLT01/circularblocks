@@ -1,5 +1,7 @@
 package com.circularblocks;
 
+import com.circularblocks.mimics.MimicMeshBlockHorizontal;
+import com.circularblocks.mimics.MimicMeshBlockPillar;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +42,8 @@ public class ProxyBlock extends Block {
 
             Block targetBlock = level.getBlockState(parentPos).getBlock();
 
-            if (targetBlock instanceof MeshedBlock || targetBlock instanceof MeshedBlockPillar) {
+            if (targetBlock instanceof MeshedBlock || targetBlock instanceof MeshedBlockPillar ||
+                targetBlock instanceof MimicMeshBlockPillar || targetBlock instanceof MimicMeshBlockHorizontal) {
                 System.out.println("Destroy parent block");
                 level.destroyBlock(parentPos, !player.isCreative());
             } else {
@@ -58,7 +61,8 @@ public class ProxyBlock extends Block {
         // If the block at the parent position is no longer a Cylinder, remove this proxy
         Block targetBlock = level.getBlockState(parentPos).getBlock();
 
-        if (!(targetBlock instanceof MeshedBlock || targetBlock instanceof MeshedBlockPillar)) {
+        if (!(targetBlock instanceof MeshedBlock || targetBlock instanceof MeshedBlockPillar ||
+              targetBlock instanceof MimicMeshBlockPillar || targetBlock instanceof  MimicMeshBlockHorizontal)) {
 
             System.out.println("Destroying, mesh not found, found: " + level.getBlockState(parentPos).getBlock().getClass().getName());
             return Blocks.AIR.defaultBlockState();

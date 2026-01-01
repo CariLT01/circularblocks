@@ -3,9 +3,7 @@ package com.circularblocks;
 import com.circularblocks.loaders.LoaderType;
 import com.circularblocks.loaders.MeshLoader;
 import com.circularblocks.loaders.MimicMeshLoader;
-import com.circularblocks.mimics.MimicCylinderBlock;
-import com.circularblocks.mimics.MimicCylinderBlockEntity;
-import com.circularblocks.mimics.MimicPolarCylinderBlockEntity;
+import com.circularblocks.mimics.MimicMeshBlockEntity;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
@@ -19,7 +17,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.api.distmarker.Dist;
@@ -61,23 +58,15 @@ public class CircularBlocks
             .noOcclusion()
             .noParticlesOnBreak()));
 
+    public static final RegistryObject<Block> MIMIC_PLACEHOLDER_BLOCK = BLOCKS.register("mimic_placeholder", () -> new Block(BlockBehaviour.Properties.of()));
+
+
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
     DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
 
 
-    public static final RegistryObject<Block> DUMMY_MIMIC_POLAR_CYLINDER_BLOCK = BLOCKS.register("dummy_mimic_polar_cylinder", () -> new MimicCylinderBlock(BlockBehaviour.Properties.of()
-            .strength(1.0f)
-            .noOcclusion()
-            .noParticlesOnBreak()));
-
-    public static final RegistryObject<BlockEntityType<MimicPolarCylinderBlockEntity>> MIMIC_CYLINDER_TYPE =
-            BLOCK_ENTITIES.register("dummy_mimic_cylinder", () ->
-                    BlockEntityType.Builder.of(
-                            MimicPolarCylinderBlockEntity::new, // This now matches (pos, state)
-                            DUMMY_MIMIC_POLAR_CYLINDER_BLOCK.get()
-                    ).build(null)
-            );
+    public static RegistryObject<BlockEntityType<MimicMeshBlockEntity>> MIMIC_CYLINDER_TYPE;
 
 
 
@@ -136,6 +125,16 @@ public class CircularBlocks
                 LoaderType.MESH_LOADER
         );
 
+        CylinderGroupConfiguration cylinderGroupConfigurationMimicPlanar = new CylinderGroupConfiguration(
+                List.of(new Vector3f(0.25f, 1.0f, 0.25f), new Vector3f(0.5f, 1.0f, 0.5f), new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(2.0f, 1.0f, 2.0f), new Vector3f(3.0f, 1.0f, 3.0f)),
+                List.of("_mini", "_half", "", "_2x2", "_3x3"),
+                List.of(16, 16, 32, 32, 32),
+                List.of(true, true, false, false, true),
+                List.of(1.0f, 2.0f, 4.0f, 8.0f, 8.0f),
+                true,
+                LoaderType.MIMIC_MESH_LOADER
+        );
+
         AngledCylinderGroupConfiguration angledCylinderGroupConfiguration = new AngledCylinderGroupConfiguration(
                 List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),
                         new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f)),
@@ -143,6 +142,15 @@ public class CircularBlocks
                 List.of(16, 16, 16, 16, 16, 16, 16, 16),
                 List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
                 true, LoaderType.MESH_LOADER, true
+        );
+
+        AngledCylinderGroupConfiguration angledCylinderGroupMimicConfiguration = new AngledCylinderGroupConfiguration(
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),
+                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f)),
+                List.of("", "_1x2", "_1x3", "_1x4", "r", "_rx2", "_rx3", "_rx4"),
+                List.of(16, 16, 16, 16, 16, 16, 16, 16),
+                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
+                true, LoaderType.MIMIC_MESH_LOADER, true
         );
 
         AngledCylinderGroupConfiguration angledCylinderGroupConfigurationFace = new AngledCylinderGroupConfiguration(
@@ -154,9 +162,31 @@ public class CircularBlocks
                 true, LoaderType.MESH_LOADER, false
         );
 
+        AngledCylinderGroupConfiguration angledCylinderGroupMimicConfigurationFace = new AngledCylinderGroupConfiguration(
+                List.of(new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(1.0f, 2.0f, 2.0f), new Vector3f(1.0f, 3.0f, 3.0f),new Vector3f(1.0f, 4.0f, 4.0f),
+                        new Vector3f(1.0f, 1.0f, -1.0f), new Vector3f(1.0f, 2.0f, -2.0f), new Vector3f(1.0f, 3.0f, -3.0f), new Vector3f(1.0f, 4.0f, -4.0f)),
+                List.of("", "_1x2", "_1x3", "_1x4", "r", "_rx2", "_rx3", "_rx4"),
+                List.of(16, 16, 16, 16, 16, 16, 16, 16),
+                List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
+                true, LoaderType.MIMIC_MESH_LOADER, false
+        );
+
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationMimic,
-                new ShapeAppareance("minecraft:block/stone", "minecraft:block/glass"),
+                MimicAppearance.MIMIC_APPEARANCE,
                 "mimic_cylinder");
+
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationMimicPlanar,
+                MimicAppearance.MIMIC_APPEARANCE_PLANAR,
+                "mimic_cylinder_planar");
+
+        SHAPE_REGISTRIES.createShapeGroup(angledCylinderGroupMimicConfiguration,
+                MimicAppearance.MIMIC_APPEARANCE,
+                "angled_mimic_cylinder");
+
+        SHAPE_REGISTRIES.createShapeGroup(angledCylinderGroupMimicConfigurationFace,
+                MimicAppearance.MIMIC_APPEARANCE,
+                "angled_face_mimic_cylinder");
+
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top"),
@@ -169,10 +199,11 @@ public class CircularBlocks
         );
 
 
+
         // All log types
 
 
-        SHAPE_REGISTRIES.batchedCreateShapeGroup(
+        /*SHAPE_REGISTRIES.batchedCreateShapeGroup(
                 cylinderGroupConfiguration,
                 List.of("oak", "birch", "jungle", "spruce", "acacia", "dark_oak", "mangrove", "cherry"),
                 "minecraft:block/%s_log_top",
@@ -207,7 +238,7 @@ public class CircularBlocks
                 "minecraft:block/%s",
                 "minecraft:block/%s",
                 "%s_cylinder"
-        );
+        ); */
 
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
@@ -277,8 +308,35 @@ public class CircularBlocks
                 )
         );
 
+        SHAPE_REGISTRIES.addShape(
+                new QuarterCylinderShape(
+                        new QuarterCylinderShapeSettings(
+                                new ShapeSettings(
+                                        "mimic_quarter_cylinder",
+                                        "circularblocks:block/mimic_frame_x",
+                                        "mcircularblocks:block/mimic_frame_x_top",
+                                        new Vector3f(1.0f, 1.0f, 1.0f),
+                                        ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL,
+                                        LoaderType.MIMIC_MESH_LOADER
+                                ),
+                                32,
+                                false,
+                                1.0f
+                        )
+                )
+        );
 
-        SHAPE_REGISTRIES.registerBlocksAndItems();
+
+        ShapeRegistryResults results = SHAPE_REGISTRIES.registerBlocksAndItems();
+        MIMIC_CYLINDER_TYPE = BLOCK_ENTITIES.register("mimic_cylinder", () -> {
+            // Convert your list of RegistryObjects to an array of Blocks
+            Block[] validBlocks = results.blockEntitiesToRegister().stream()
+                    .map(RegistryObject::get)
+                    .toArray(Block[]::new);
+
+            return BlockEntityType.Builder.of(MimicMeshBlockEntity::new, validBlocks)
+                    .build(null);
+        });
         SHAPE_REGISTRIES.computeCollisionsForEach();
 
 
