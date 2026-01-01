@@ -1,9 +1,9 @@
 package com.circularblocks;
 
+import com.circularblocks.loaders.LoaderType;
 import com.circularblocks.loaders.MeshLoader;
 import com.circularblocks.loaders.MimicMeshLoader;
 import com.circularblocks.mimics.MimicCylinderBlock;
-import com.circularblocks.mimics.MimicCylinderBlockEntity;
 import com.circularblocks.mimics.MimicPolarCylinderBlockEntity;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
@@ -18,7 +18,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.api.distmarker.Dist;
@@ -64,29 +63,23 @@ public class CircularBlocks
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
     DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
 
-    public static final RegistryObject<Block> MIMIC_CYLINDER_BLOCK = BLOCKS.register("mimic_cylinder", () -> new MimicCylinderBlock(BlockBehaviour.Properties.of()
+
+    public static final RegistryObject<Block> DUMMY_MIMIC_POLAR_CYLINDER_BLOCK = BLOCKS.register("dummy_mimic_polar_cylinder", () -> new MimicCylinderBlock(BlockBehaviour.Properties.of()
             .strength(1.0f)
             .noOcclusion()
             .noParticlesOnBreak()));
 
-    public static final RegistryObject<BlockEntityType<MimicCylinderBlockEntity>> CYLINDER_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("mimic_cylinder", () -> BlockEntityType.Builder.of(
-                    MimicCylinderBlockEntity::new,
-                    MIMIC_CYLINDER_BLOCK.get()
-            ).build(null));
+    public static final RegistryObject<BlockEntityType<MimicPolarCylinderBlockEntity>> MIMIC_CYLINDER_TYPE =
+            BLOCK_ENTITIES.register("dummy_mimic_cylinder", () ->
+                    BlockEntityType.Builder.of(
+                            MimicPolarCylinderBlockEntity::new, // This now matches (pos, state)
+                            DUMMY_MIMIC_POLAR_CYLINDER_BLOCK.get()
+                    ).build(null)
+            );
 
-    public static final RegistryObject<Block> MIMIC_POLAR_CYLINDER_BLOCK = BLOCKS.register("mimic_polar_cylinder", () -> new MimicCylinderBlock(BlockBehaviour.Properties.of()
-            .strength(1.0f)
-            .noOcclusion()
-            .noParticlesOnBreak()));
 
-    public static final RegistryObject<BlockEntityType<MimicPolarCylinderBlockEntity>> POLAR_CYLINDER_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("mimic_polar_cylinder", () -> BlockEntityType.Builder.of(
-                    MimicPolarCylinderBlockEntity::new,
-                    MIMIC_POLAR_CYLINDER_BLOCK.get()
-            ).build(null));
 
-    public static final ShapeRegistries SHAPE_REGISTRIES = new ShapeRegistries(BLOCKS, ITEMS, CREATIVE_MODE_TABS);
+    public static final ShapeRegistries SHAPE_REGISTRIES = new ShapeRegistries(BLOCKS, ITEMS, CREATIVE_MODE_TABS, BLOCK_ENTITIES);
 
 
 
@@ -117,7 +110,18 @@ public class CircularBlocks
                 List.of(16, 16, 32, 32, 32),
                 List.of(true, true, false, false, true),
                 List.of(1.0f, 2.0f, 4.0f, 8.0f, 8.0f),
-                false
+                false,
+                LoaderType.MESH_LOADER
+        );
+
+        CylinderGroupConfiguration cylinderGroupConfigurationMimic = new CylinderGroupConfiguration(
+                List.of(new Vector3f(0.25f, 1.0f, 0.25f), new Vector3f(0.5f, 1.0f, 0.5f), new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(2.0f, 1.0f, 2.0f), new Vector3f(3.0f, 1.0f, 3.0f)),
+                List.of("_mini", "_half", "", "_2x2", "_3x3"),
+                List.of(16, 16, 32, 32, 32),
+                List.of(true, true, false, false, true),
+                List.of(1.0f, 2.0f, 4.0f, 8.0f, 8.0f),
+                false,
+                LoaderType.MIMIC_MESH_LOADER
         );
 
         CylinderGroupConfiguration cylinderGroupConfigurationPlanar = new CylinderGroupConfiguration(
@@ -126,7 +130,8 @@ public class CircularBlocks
                 List.of(16, 16, 32, 32, 32),
                 List.of(true, true, false, false, true),
                 List.of(1.0f, 2.0f, 4.0f, 8.0f, 8.0f),
-                true
+                true,
+                LoaderType.MESH_LOADER
         );
 
         AngledCylinderGroupConfiguration angledCylinderGroupConfiguration = new AngledCylinderGroupConfiguration(
@@ -135,8 +140,13 @@ public class CircularBlocks
                 List.of("", "_1x2", "_1x3","r", "_rx2", "_rx3"),
                 List.of(32, 32, 32, 32, 32, 32),
                 List.of(4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f),
-                true
+                true,
+                LoaderType.MESH_LOADER
         );
+
+        SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationMimic,
+                new ShapeAppareance("minecraft:block/stone", "minecraft:block/glass"),
+                "mimic_cylinder");
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
                 new ShapeAppareance("minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top"),
@@ -147,6 +157,7 @@ public class CircularBlocks
                 new ShapeAppareance("minecraft:block/iron_block", "minecraft:block/iron_block"),
                 "iron_block_cylinder"
         );
+
 
         // All log types
 
@@ -190,7 +201,7 @@ public class CircularBlocks
 
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfiguration,
-                new ShapeAppareance("minecraft:block/quartz_block", "minecraft:block/quartz_block_top"),
+                new ShapeAppareance("minecraft:block/quartz_block_side", "minecraft:block/quartz_block_top"),
                 "quartz_cylinder");
 
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationPlanar,
@@ -222,7 +233,8 @@ public class CircularBlocks
                                         "minecraft:block/iron_block",
                                         "minecraft:block/iron_block",
                                         new Vector3f(1.0f, 1.0f, 1.0f),
-                                        ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL
+                                        ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL,
+                                        LoaderType.MESH_LOADER
                                 ),
                                 32,
                                 false,
@@ -241,7 +253,8 @@ public class CircularBlocks
                                         "minecraft:block/quartz_block_side",
                                         "minecraft:block/quartz_block_side",
                                         new Vector3f(1.0f, 1.0f, 1.0f),
-                                        ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL
+                                        ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL,
+                                        LoaderType.MESH_LOADER
                                 ),
                                 32,
                                 false,

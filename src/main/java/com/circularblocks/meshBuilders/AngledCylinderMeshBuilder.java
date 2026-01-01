@@ -1,5 +1,6 @@
 package com.circularblocks.meshBuilders;
 
+import com.circularblocks.loaders.LoaderType;
 import com.circularblocks.shapes.AngledCylinderShape;
 import com.circularblocks.shapes.CylinderShape;
 import com.circularblocks.types.Vector2f;
@@ -34,6 +35,10 @@ public class AngledCylinderMeshBuilder implements MeshBuilder {
     }
 
     public static String getMtlFileContents(AngledCylinderShape cylinder) {
+
+        if (cylinder.loaderType == LoaderType.MIMIC_MESH_LOADER) {
+            return "newmtl cylinder_sides\nmap_Kd minecraft:block/stone\nnewmtl cylinder_caps\nmap_Kd minecraft:block/glass";
+        }
 
         return String.format("newmtl cylinder_sides\nmap_Kd %s\nnewmtl cylinder_caps\nmap_Kd %s",
 

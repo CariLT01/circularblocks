@@ -1,5 +1,8 @@
 package com.circularblocks;
 
+import com.circularblocks.loaders.LoaderType;
+import com.circularblocks.mimics.MimicCylinderBlock;
+import com.circularblocks.mimics.MimicPolarCylinderBlockEntity;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.ShapeGroupConfiguration;
 import com.circularblocks.types.Vector3i;
@@ -12,6 +15,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -26,13 +31,15 @@ public class ShapeRegistries {
     private final DeferredRegister<Block> BLOCKS;
     private final DeferredRegister<Item> ITEMS;
     private final DeferredRegister<CreativeModeTab> CREATIVE_TABS;
+    private final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES;
     private final List<Shape> meshShapes = new ArrayList<>();
     private final Map<String, List<Vector3i>> collisionBoxes = new HashMap<>();
 
 
-    public ShapeRegistries(DeferredRegister<Block> blocksRegistries, DeferredRegister<Item> itemsRegistries, DeferredRegister<CreativeModeTab> creativeModTab) {
+    public ShapeRegistries(DeferredRegister<Block> blocksRegistries, DeferredRegister<Item> itemsRegistries, DeferredRegister<CreativeModeTab> creativeModTab, DeferredRegister<BlockEntityType<?>> blockEntities) {
         this.BLOCKS = blocksRegistries;
         this.ITEMS = itemsRegistries;
+        this.BLOCK_ENTITIES = blockEntities;
         this.CREATIVE_TABS = creativeModTab;
     }
 
@@ -71,17 +78,41 @@ public class ShapeRegistries {
         for (Shape shape : meshShapes) {
             RegistryObject<Block> newBlock = null;
 
-            if (shape.placementBehavior == ShapePlacementBehavior.ROTATED_PILLAR_BLOCK) {
-                newBlock = BLOCKS.register(shape.name, () -> new MeshedBlockPillar(BlockBehaviour.Properties.of()
-                        .mapColor(MapColor.QUARTZ)
-                        .strength(1.0f)
-                        .noOcclusion()));
+            if (shape.loaderType == LoaderType.MESH_LOADER) {
+                if (shape.placementBehavior == ShapePlacementBehavior.ROTATED_PILLAR_BLOCK) {
+                    newBlock = BLOCKS.register(shape.name, () -> new MeshedBlockPillar(BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.QUARTZ)
+                            .strength(1.0f)
+                            .noOcclusion()));
+                } else {
+                    newBlock = BLOCKS.register(shape.name, () -> new MeshedBlock(BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.QUARTZ)
+                            .strength(1.0f)
+                            .noOcclusion()));
+                }
+                RegistryObject<Block> finalNewBlock = newBlock;
             } else {
-                newBlock = BLOCKS.register(shape.name, () -> new MeshedBlock(BlockBehaviour.Properties.of()
-                        .mapColor(MapColor.QUARTZ)
-                        .strength(1.0f)
-                        .noOcclusion()));
+                newBlock = BLOCKS.register(shape.name, () -> new MimicCylinderBlock(
+                        BlockBehaviour.Properties.of()
+                                .mapColor(MapColor.QUARTZ)
+                                .strength(1.0f)
+                                .noOcclusion()
+                ));
+
+
+// 1. Declare the variable as an array or AtomicReference so the lambda can capture it
+                final RegistryObject<BlockEntityType<MimicPolarCylinderBlockEntity>>[] typeRef = new RegistryObject[1];
+
+                RegistryObject<Block> finalNewBlock1 = newBlock;
+                BLOCK_ENTITIES.register(shape.name, () ->
+                        BlockEntityType.Builder.of(
+                                MimicPolarCylinderBlockEntity::new, // This now matches (pos, state)
+                                finalNewBlock1.get()
+                        ).build(null)
+                );
+
             }
+
             RegistryObject<Block> finalNewBlock = newBlock;
             registeredItems.add(ITEMS.register(shape.name, () -> new BlockItem(finalNewBlock.get(), new Item.Properties())));
 

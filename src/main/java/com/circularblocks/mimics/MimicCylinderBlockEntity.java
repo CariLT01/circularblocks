@@ -23,7 +23,7 @@ public class MimicCylinderBlockEntity extends BlockEntity {
     public static final ModelProperty<BlockState> MIMIC_PROPERTY = new ModelProperty<>();
 
     public MimicCylinderBlockEntity(BlockPos pos, BlockState state) {
-        super(CircularBlocks.CYLINDER_BLOCK_ENTITY.get(), pos, state);
+        super(null, pos, state);
     }
 
     public void setMimic(BlockState newBlockState) {

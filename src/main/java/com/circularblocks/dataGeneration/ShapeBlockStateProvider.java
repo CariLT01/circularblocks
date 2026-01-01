@@ -1,6 +1,7 @@
 package com.circularblocks.dataGeneration;
 
 import com.circularblocks.CircularBlocks;
+import com.circularblocks.loaders.LoaderType;
 import com.circularblocks.shapes.Shape;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -101,7 +102,7 @@ public class ShapeBlockStateProvider extends BlockStateProvider {
 
                     return display;
                 }
-            }.child("part1", getSmoothMeshPart(name)));
+            }.child("part1", getSmoothMeshPart(name, shape.loaderType)));
 
             Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(this.ModId, name));
             if (block instanceof RotatedPillarBlock pillar) {
@@ -130,10 +131,10 @@ public class ShapeBlockStateProvider extends BlockStateProvider {
         }
     }
 
-    private BlockModelBuilder getSmoothMeshPart(String name) {
+    private BlockModelBuilder getSmoothMeshPart(String name, LoaderType loaderType) {
         return models().getBuilder(name + "_part")
                 .customLoader((partBuilder, partHelper) -> new CustomLoaderBuilder<BlockModelBuilder>(
-                        new ResourceLocation("circularblocks", "smooth_mesh_loader"),
+                        new ResourceLocation("circularblocks", loaderType == LoaderType.MIMIC_MESH_LOADER ? "mimic_mesh_loader" : "smooth_mesh_loader"),
                         partBuilder,
                         partHelper) {
 

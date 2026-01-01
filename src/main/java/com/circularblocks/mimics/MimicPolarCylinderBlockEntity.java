@@ -8,10 +8,13 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
 
 public class MimicPolarCylinderBlockEntity extends BlockEntity {
 
@@ -20,8 +23,9 @@ public class MimicPolarCylinderBlockEntity extends BlockEntity {
     public static final ModelProperty<BlockState> MIMIC_PROPERTY = new ModelProperty<>();
 
     public MimicPolarCylinderBlockEntity(BlockPos pos, BlockState state) {
-        super(CircularBlocks.POLAR_CYLINDER_BLOCK_ENTITY.get(), pos, state);
+        super(CircularBlocks.MIMIC_CYLINDER_TYPE.get(), pos, state);
     }
+
 
     public void setMimic(BlockState newBlockState) {
         this.mimic = newBlockState;

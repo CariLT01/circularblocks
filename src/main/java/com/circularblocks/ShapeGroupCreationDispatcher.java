@@ -35,7 +35,8 @@ public class ShapeGroupCreationDispatcher {
                                                 appareance.sideTextureName(),
                                                 appareance.topTextureName(),
                                                 size,
-                                                ShapePlacementBehavior.ROTATED_PILLAR_BLOCK
+                                                ShapePlacementBehavior.ROTATED_PILLAR_BLOCK,
+                                                groupType.loaderType
                                         ),
                                         numSides,
                                         centered,
@@ -66,7 +67,8 @@ public class ShapeGroupCreationDispatcher {
                                                 appareance.sideTextureName(),
                                                 appareance.topTextureName(),
                                                 size,
-                                                ShapePlacementBehavior.ROTATED_PILLAR_BLOCK
+                                                ShapePlacementBehavior.ROTATED_PILLAR_BLOCK,
+                                                groupType.loaderType
                                         ),
                                         numSides,
                                         true,
