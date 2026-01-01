@@ -1,0 +1,67 @@
+{
+  "parent": "forge:item/default",
+  "ambientocclusion": false,
+  "children": {
+    "part1": {
+      "emissive_ambient": false,
+      "loader": "circularblocks:mimic_mesh_loader",
+      "model": "circularblocks:models/item/mimic_polar_cylinder.obj"
+    }
+  },
+  "display": {
+    "firstperson_righthand": {
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "ground": {
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -45,
+        -45,
+        0
+      ],
+      "scale": [
+        0.31,
+        0.31,
+        0.31
+      ]
+    },
+    "thirdperson_lefthand": {
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -45,
+        -45,
+        -45
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    }
+  },
+  "item_render_order": [
+    "part1"
+  ],
+  "loader": "forge:composite",
+  "render_type": "minecraft:cutout_mipped",
+  "shade": false,
+  "textures": {
+    "particle": "minecraft:block/acacia_log"
+  }
+}

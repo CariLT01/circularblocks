@@ -1,6 +1,10 @@
 package com.circularblocks;
 
 import com.circularblocks.loaders.MeshLoader;
+import com.circularblocks.loaders.MimicMeshLoader;
+import com.circularblocks.mimics.MimicCylinderBlock;
+import com.circularblocks.mimics.MimicCylinderBlockEntity;
+import com.circularblocks.mimics.MimicPolarCylinderBlockEntity;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
@@ -14,6 +18,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
@@ -55,6 +61,31 @@ public class CircularBlocks
             .noParticlesOnBreak()));
 
 
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
+    DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
+
+    public static final RegistryObject<Block> MIMIC_CYLINDER_BLOCK = BLOCKS.register("mimic_cylinder", () -> new MimicCylinderBlock(BlockBehaviour.Properties.of()
+            .strength(1.0f)
+            .noOcclusion()
+            .noParticlesOnBreak()));
+
+    public static final RegistryObject<BlockEntityType<MimicCylinderBlockEntity>> CYLINDER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("mimic_cylinder", () -> BlockEntityType.Builder.of(
+                    MimicCylinderBlockEntity::new,
+                    MIMIC_CYLINDER_BLOCK.get()
+            ).build(null));
+
+    public static final RegistryObject<Block> MIMIC_POLAR_CYLINDER_BLOCK = BLOCKS.register("mimic_polar_cylinder", () -> new MimicCylinderBlock(BlockBehaviour.Properties.of()
+            .strength(1.0f)
+            .noOcclusion()
+            .noParticlesOnBreak()));
+
+    public static final RegistryObject<BlockEntityType<MimicPolarCylinderBlockEntity>> POLAR_CYLINDER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("mimic_polar_cylinder", () -> BlockEntityType.Builder.of(
+                    MimicPolarCylinderBlockEntity::new,
+                    MIMIC_POLAR_CYLINDER_BLOCK.get()
+            ).build(null));
+
     public static final ShapeRegistries SHAPE_REGISTRIES = new ShapeRegistries(BLOCKS, ITEMS, CREATIVE_MODE_TABS);
 
 
@@ -73,6 +104,8 @@ public class CircularBlocks
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+
+        BLOCK_ENTITIES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -261,6 +294,7 @@ public class CircularBlocks
         public static void registerGeometryLoaders(ModelEvent.RegisterGeometryLoaders event) {
             // This ID "smooth_cylinder" is what you use in your JSON
             event.register("smooth_mesh_loader", MeshLoader.INSTANCE);
+            event.register("mimic_mesh_loader", MimicMeshLoader.INSTANCE);
         }
 
     }
