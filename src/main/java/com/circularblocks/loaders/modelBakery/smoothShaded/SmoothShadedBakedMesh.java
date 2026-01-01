@@ -1,4 +1,4 @@
-package com.circularblocks.dataGeneration;
+package com.circularblocks.loaders.modelBakery.smoothShaded;
 
 import com.circularblocks.types.Vector3f;
 import net.minecraft.client.renderer.RenderType;
@@ -15,9 +15,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BakedMesh extends BakedModelWrapper<BakedModel> {
+public class SmoothShadedBakedMesh extends BakedModelWrapper<BakedModel> {
 
-    public BakedMesh(BakedModel originalModel) {
+    public SmoothShadedBakedMesh(BakedModel originalModel) {
         super(originalModel);
     }
 

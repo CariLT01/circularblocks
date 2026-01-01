@@ -1,0 +1,5 @@
+newmtl cylinder_sides
+map_Kd minecraft:block/stone
+
+newmtl cylinder_caps
+map_Kd minecraft:block/glass

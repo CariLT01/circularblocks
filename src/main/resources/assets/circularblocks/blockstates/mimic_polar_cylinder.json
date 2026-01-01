@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "circularblocks:block/mimic_polar_cylinder_model" }
+  }
+}
