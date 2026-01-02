@@ -63,14 +63,14 @@ public class ShapeBlockStateProvider extends BlockStateProvider {
                     JsonObject display = new JsonObject();
                     JsonObject gui = new JsonObject();
                     JsonArray rotation = new JsonArray();
-                    rotation.add(-75);
-                    rotation.add(-75);
+                    rotation.add(30);
+                    rotation.add(45);
                     rotation.add(0);
                     gui.add("rotation", rotation);
                     JsonArray scale = new JsonArray();
-                    scale.add(0.31);
-                    scale.add(0.31);
-                    scale.add(0.31);
+                    scale.add(0.2);
+                    scale.add(0.2);
+                    scale.add(0.2);
                     gui.add("scale", scale);
                     display.add("gui", gui);
 
@@ -81,9 +81,9 @@ public class ShapeBlockStateProvider extends BlockStateProvider {
                     rotation2.add(-45);
                     thirdperson_righthand.add("rotation", rotation2);
                     JsonArray scale2 = new JsonArray();
-                    scale2.add(0.25);
-                    scale2.add(0.25);
-                    scale2.add(0.25);
+                    scale2.add(0.5);
+                    scale2.add(0.5);
+                    scale2.add(0.5);
                     thirdperson_righthand.add("scale", scale2);
                     display.add("thirdperson_righthand", thirdperson_righthand);
 

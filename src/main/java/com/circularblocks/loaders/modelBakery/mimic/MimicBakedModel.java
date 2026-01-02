@@ -1,6 +1,7 @@
 package com.circularblocks.loaders.modelBakery.mimic;
 
 import com.circularblocks.mimics.MimicMeshBlockEntity;
+import com.circularblocks.types.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -39,6 +40,9 @@ public class MimicBakedModel extends BakedModelWrapper<BakedModel> {
         TextureAtlasSprite mimicCap = getSpriteForDirection(mimicState, Direction.UP, rand, data, renderType);
 
         for (BakedQuad quad : templateQuads) {
+
+
+
             // 2. Look at the template sprite's name from your OBJ
             String templateName = quad.getSprite().contents().name().getPath();
             System.out.println("Quad Sprite: " + templateName); // Check your console for this!
@@ -66,26 +70,75 @@ public class MimicBakedModel extends BakedModelWrapper<BakedModel> {
     }
 
     private BakedQuad remapQuad(BakedQuad quad, TextureAtlasSprite mimicSprite) {
-        int[] vertices = quad.getVertices().clone();
+        Vector3f lightDir_r = new Vector3f(1.0f, 1.0f, 1.0f);
+        Vector3f lightDir = lightDir_r.normalize();
+
+        int[] vertexData = quad.getVertices().clone();
         // We need the sprite that was ORIGINALLY on the OBJ (e.g., weathered_copper)
         TextureAtlasSprite originalSprite = quad.getSprite();
+
+        int unifiedLight = vertexData[6];
 
         for (int i = 0; i < 4; i++) {
             int offset = i * 8;
 
             // 1. Get the current UV (which is on the Atlas)
-            float atlasU = Float.intBitsToFloat(vertices[offset + 4]);
-            float atlasV = Float.intBitsToFloat(vertices[offset + 5]);
+            float atlasU = Float.intBitsToFloat(vertexData[offset + 4]);
+            float atlasV = Float.intBitsToFloat(vertexData[offset + 5]);
 
             // 2. "Un-interpolate" to get the 0.0 - 16.0 position inside the original sprite
             float localU = originalSprite.getUOffset(atlasU);
             float localV = originalSprite.getVOffset(atlasV);
 
             // 3. Re-map that local position onto the NEW mimic sprite
-            vertices[offset + 4] = Float.floatToRawIntBits(mimicSprite.getU(localU));
-            vertices[offset + 5] = Float.floatToRawIntBits(mimicSprite.getV(localV));
+            vertexData[offset + 4] = Float.floatToRawIntBits(mimicSprite.getU(localU));
+            vertexData[offset + 5] = Float.floatToRawIntBits(mimicSprite.getV(localV));
+
+            // 1. Extract the Packed Normal from index 7
+            int packedNormal = vertexData[offset + 7];
+
+            // Unpack bytes (Values are stored as signed bytes from -127 to 127)
+            float nx = ((byte) (packedNormal & 0xFF)) / 127.0f;
+            float ny = ((byte) ((packedNormal >> 8) & 0xFF)) / 127.0f;
+            float nz = ((byte) ((packedNormal >> 16) & 0xFF)) / 127.0f;
+
+            // 2. Calculate Dot Product
+            float dot = nx * lightDir.x() + ny * lightDir.y() + nz * lightDir.z();
+// 1. Map dot product from [-1, 1] to [0, 1]
+// This "wraps" the light around the cylinder.
+            int v = getV(dot);
+
+            // 2. Overwrite the lightmap for this vertex
+            // This stops Minecraft from trying to "blend" world light across the face
+            vertexData[offset + 6] = unifiedLight;
+
+            // 3. Inject into Color Field (Index 3)
+            // Format: 0x AA BB GG RR
+            vertexData[offset + 3] = 0xFF000000 | (v << 16) | (v << 8) | v;
         }
 
-        return new BakedQuad(vertices, quad.getTintIndex(), quad.getDirection(), mimicSprite, quad.isShade());
+        return new BakedQuad(vertexData, quad.getTintIndex(), quad.getDirection(), mimicSprite, quad.isShade());
+    }
+
+    private static int getV(float dot) {
+        // 1. Shift the dot product so the "bright" area is wider
+        // We want the light to stay at 100% for longer across the curve.
+        float brightnessFactor = dot * 0.5f + 0.5f;
+
+        // 2. The "Pop" Math: Use a higher power (3.0 or 4.0)
+        // This creates a "Shoulder" – it stays bright (1.0) for a long time,
+        // then dives into the shadow quickly at the edge.
+        float contrast = (float) Math.pow(brightnessFactor, 0.6f);
+
+        // 3. The "Shadow Depth":
+        // We go from 0.6 (Standard MC Side) to 1.0 (Standard MC Top)
+        // But we use a 'Smoothstep' or 'Bias' to make the shadow feel clean.
+        float brightness = 0.65f + (contrast * 0.35f);
+
+        // 4. Subtle "Happy" Tint (Optional)
+        // If you want it to look less gray, we can keep the Shadow at 0.65
+        // but the Highlight at 1.0.
+
+        return (int)(brightness * 255) & 0xFF;
     }
 }

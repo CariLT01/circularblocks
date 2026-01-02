@@ -26,7 +26,7 @@ public class SmoothShadedMeshGeometry implements IUnbakedGeometry<SmoothShadedMe
         ObjModel.ModelSettings settings = new ObjModel.ModelSettings(
                 objLocation,
                 true,  // automaticCulling
-                true,  // shadeQuads (We'll override this in the wrapper anyway)
+                false,  // shadeQuads (We'll override this in the wrapper anyway)
                 true,  // flipV (Commonly needed for Blender/OBJ exports)
                 true,  // emissiveAmbient
                 null   // mtllibOverride
