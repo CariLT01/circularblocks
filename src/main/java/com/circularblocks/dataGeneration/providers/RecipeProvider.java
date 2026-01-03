@@ -1,4 +1,4 @@
-package com.circularblocks.dataGeneration;
+package com.circularblocks.dataGeneration.providers;
 
 import com.circularblocks.shapes.AngledCylinderShape;
 import com.circularblocks.shapes.CylinderShape;

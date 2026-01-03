@@ -1,9 +1,12 @@
 package com.circularblocks;
 
+import com.circularblocks.blocks.ProxyBlock;
 import com.circularblocks.loaders.LoaderType;
 import com.circularblocks.loaders.MeshLoader;
 import com.circularblocks.loaders.MimicMeshLoader;
-import com.circularblocks.mimics.MimicMeshBlockEntity;
+import com.circularblocks.blocks.mimics.MimicMeshBlockEntity;
+import com.circularblocks.registry.ShapeRegistries;
+import com.circularblocks.registry.ShapeRegistryResults;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;

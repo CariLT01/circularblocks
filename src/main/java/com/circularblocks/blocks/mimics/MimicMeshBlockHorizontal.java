@@ -1,4 +1,4 @@
-package com.circularblocks.mimics;
+package com.circularblocks.blocks.mimics;
 
 import com.circularblocks.CircularBlocks;
 import com.circularblocks.types.Vector3i;
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-import static com.circularblocks.ProxyBlock.*;
+import static com.circularblocks.blocks.ProxyBlock.*;
 
 public class MimicMeshBlockHorizontal extends HorizontalDirectionalBlock implements EntityBlock {
 

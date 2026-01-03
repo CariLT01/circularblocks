@@ -1,7 +1,7 @@
-package com.circularblocks;
+package com.circularblocks.blocks;
 
-import com.circularblocks.mimics.MimicMeshBlockHorizontal;
-import com.circularblocks.mimics.MimicMeshBlockPillar;
+import com.circularblocks.blocks.mimics.MimicMeshBlockHorizontal;
+import com.circularblocks.blocks.mimics.MimicMeshBlockPillar;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;

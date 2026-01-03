@@ -1,6 +1,6 @@
 package com.circularblocks.loaders.modelBakery.mimic;
 
-import com.circularblocks.mimics.MimicMeshBlockEntity;
+import com.circularblocks.blocks.mimics.MimicMeshBlockEntity;
 import com.circularblocks.types.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;

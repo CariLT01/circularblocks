@@ -1,6 +1,5 @@
-package com.circularblocks.mimics;
+package com.circularblocks.blocks.mimics;
 
-import com.circularblocks.CircularBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -8,28 +7,20 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 
-import static com.circularblocks.CircularBlocks.MIMIC_PLACEHOLDER_BLOCK;
+public class MimicCylinderBlockEntity_DO_NOT_USE extends BlockEntity {
 
-public class MimicMeshBlockEntity extends BlockEntity {
-
-    private BlockState mimic = MIMIC_PLACEHOLDER_BLOCK.get().defaultBlockState();
+    private BlockState mimic = Blocks.OAK_LOG.defaultBlockState();
 
     public static final ModelProperty<BlockState> MIMIC_PROPERTY = new ModelProperty<>();
 
-    public MimicMeshBlockEntity(BlockPos pos, BlockState state) {
-        super(CircularBlocks.MIMIC_CYLINDER_TYPE.get(), pos, state);
-
-        if (CircularBlocks.MIMIC_CYLINDER_TYPE == null) {
-            System.out.println("ERROR: MIMIC_CYLINDER_TYPE is null!");
-        }
+    public MimicCylinderBlockEntity_DO_NOT_USE(BlockPos pos, BlockState state) {
+        super(null, pos, state);
     }
-
 
     public void setMimic(BlockState newBlockState) {
         this.mimic = newBlockState;
@@ -69,13 +60,6 @@ public class MimicMeshBlockEntity extends BlockEntity {
         tag.put("mimic", NbtUtils.writeBlockState(this.mimic));
     }
 
-    @Override
-    public @NotNull BlockEntityType<?> getType() {
-        // This forces the "Mapping" to be the one from your RegistryObject
-        // every time Minecraft tries to save the entity.
-        return CircularBlocks.MIMIC_CYLINDER_TYPE.get();
-    }
-
     // --- FIXING THE NETWORKING ---
 
     @Override
@@ -91,7 +75,7 @@ public class MimicMeshBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void onDataPacket(net.minecraft.network.Connection net, ClientboundBlockEntityDataPacket pkt) {
+    public void onDataPacket(net.minecraft.network.Connection net, net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket pkt) {
         CompoundTag tag = pkt.getTag();
         if (tag != null) {
             // Load the new mimic state from the server's packet

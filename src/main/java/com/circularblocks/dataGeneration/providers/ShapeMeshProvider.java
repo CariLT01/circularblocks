@@ -1,6 +1,7 @@
-package com.circularblocks.dataGeneration;
+package com.circularblocks.dataGeneration.providers;
 
-import com.circularblocks.ShapeRegistries;
+import com.circularblocks.registry.ShapeRegistries;
+import com.circularblocks.meshBuilders.ShapeBuiltMeshResult;
 import com.circularblocks.shapes.Shape;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;

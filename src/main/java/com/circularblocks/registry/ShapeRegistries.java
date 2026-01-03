@@ -1,8 +1,10 @@
-package com.circularblocks;
+package com.circularblocks.registry;
 
+import com.circularblocks.blocks.MeshedBlock;
+import com.circularblocks.blocks.MeshedBlockPillar;
 import com.circularblocks.loaders.LoaderType;
-import com.circularblocks.mimics.MimicMeshBlockHorizontal;
-import com.circularblocks.mimics.MimicMeshBlockPillar;
+import com.circularblocks.blocks.mimics.MimicMeshBlockHorizontal;
+import com.circularblocks.blocks.mimics.MimicMeshBlockPillar;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.ShapeGroupConfiguration;
 import com.circularblocks.types.Vector3i;

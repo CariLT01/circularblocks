@@ -1,5 +1,6 @@
-package com.circularblocks;
+package com.circularblocks.blocks;
 
+import com.circularblocks.CircularBlocks;
 import com.circularblocks.types.Vector3i;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,14 +13,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.circularblocks.ProxyBlock.*;
+import static com.circularblocks.blocks.ProxyBlock.*;
 
 public class MeshedBlock extends HorizontalDirectionalBlock {
 

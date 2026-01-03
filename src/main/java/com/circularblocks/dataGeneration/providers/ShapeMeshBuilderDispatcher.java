@@ -1,14 +1,13 @@
-package com.circularblocks.dataGeneration;
+package com.circularblocks.dataGeneration.providers;
 
 import com.circularblocks.meshBuilders.AngledCylinderMeshBuilder;
 import com.circularblocks.meshBuilders.CylinderMeshBuilder;
 import com.circularblocks.meshBuilders.QuarterCylinderMeshBuilder;
+import com.circularblocks.meshBuilders.ShapeBuiltMeshResult;
 import com.circularblocks.shapes.AngledCylinderShape;
 import com.circularblocks.shapes.CylinderShape;
 import com.circularblocks.shapes.QuarterCylinderShape;
 import com.circularblocks.shapes.Shape;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class ShapeMeshBuilderDispatcher {
 

@@ -1,4 +1,4 @@
-package com.circularblocks;
+package com.circularblocks.registry;
 
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;

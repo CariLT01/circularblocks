@@ -1,6 +1,8 @@
 package com.circularblocks.dataGeneration;
 
 import com.circularblocks.CircularBlocks;
+import com.circularblocks.dataGeneration.providers.ShapeBlockStateProvider;
+import com.circularblocks.dataGeneration.providers.ShapeMeshProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
