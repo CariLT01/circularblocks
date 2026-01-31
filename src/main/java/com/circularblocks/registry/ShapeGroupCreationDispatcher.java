@@ -2,9 +2,11 @@ package com.circularblocks.registry;
 
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
+import com.circularblocks.shapes.configuration.ConnectorCylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.ShapeGroupConfiguration;
 import com.circularblocks.shapes.shapeSettings.AngledCylinderShapeSettings;
+import com.circularblocks.shapes.shapeSettings.ConnectorCylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.CylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.ShapeSettings;
 import com.circularblocks.types.Vector3f;
@@ -81,7 +83,38 @@ public class ShapeGroupCreationDispatcher {
                 );
 
             }
+        }else if (groupType instanceof ConnectorCylinderGroupConfiguration cylinderConfig) {
+            for (int i = 0; i < groupType.sizes.size(); i++) {
+
+                String suffixedName = cylinderConfig.appendedNames.get(i);
+                Vector3f size = cylinderConfig.sizes.get(i);
+                int numSides = cylinderConfig.numSides.get(i);
+                float repeatFreq = cylinderConfig.repeatFrequency.get(i);
+
+                shapeList.add(
+                        new ConnectorCylinderShape(
+                                new ConnectorCylinderShapeSettings(
+                                        new ShapeSettings(
+                                                baseName + suffixedName,
+                                                appareance.sideTextureName(),
+                                                appareance.topTextureName(),
+                                                size,
+                                                ShapePlacementBehavior.HORIZONTAL_DIRECTIONAL,
+                                                groupType.loaderType
+                                        ),
+                                        numSides,
+                                        true,
+                                        repeatFreq,
+                                        cylinderConfig.usePlanarMapping
+
+
+                                )
+                        )
+                );
+
+            }
         }
+
 
         else {
             throw new IllegalArgumentException("Unrecognized configuration type");

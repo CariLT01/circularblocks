@@ -9,6 +9,7 @@ import com.circularblocks.registry.ShapeRegistries;
 import com.circularblocks.registry.ShapeRegistryResults;
 import com.circularblocks.shapes.*;
 import com.circularblocks.shapes.configuration.AngledCylinderGroupConfiguration;
+import com.circularblocks.shapes.configuration.ConnectorCylinderGroupConfiguration;
 import com.circularblocks.shapes.configuration.CylinderGroupConfiguration;
 import com.circularblocks.shapes.shapeSettings.QuarterCylinderShapeSettings;
 import com.circularblocks.shapes.shapeSettings.ShapeSettings;
@@ -174,6 +175,14 @@ public class CircularBlocks
                 true, LoaderType.MIMIC_MESH_LOADER, false
         );
 
+        ConnectorCylinderGroupConfiguration connectorCylinderGroupConfiguration = new ConnectorCylinderGroupConfiguration(
+                List.of(new Vector3f(0.25f, 1.0f, 0.25f), new Vector3f(0.5f, 1.0f, 0.5f), new Vector3f(1.0f, 1.0f, 1.0f)),
+                List.of("_mini", "_half", "_1x1"),
+                List.of(16, 16, 16),
+                List.of(4.0f, 4.0f, 4.0f),
+                true, LoaderType.MESH_LOADER, true
+        );
+
         SHAPE_REGISTRIES.createShapeGroup(cylinderGroupConfigurationMimic,
                 MimicAppearance.MIMIC_APPEARANCE,
                 "mimic_cylinder");
@@ -200,6 +209,12 @@ public class CircularBlocks
                 new ShapeAppareance("minecraft:block/iron_block", "minecraft:block/iron_block"),
                 "iron_block_cylinder"
         );
+
+        SHAPE_REGISTRIES.createShapeGroup(connectorCylinderGroupConfiguration,
+                new ShapeAppareance("minecraft:block/quartz_pillar", "minecraft:block/quartz_pillar_top"),
+                "quartz_block_connector_cylinder"
+        );
+
 
 
 
